@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe/vimeoembed",
+	"name": "sunnysideup/vimeoembed",
 	"type": "silverstripe-module",
 	"description": "allows you to embed vimeo videos into your silverstripe website",
 	"homepage": "http://www.silverstripe-webdevelopment.com",
