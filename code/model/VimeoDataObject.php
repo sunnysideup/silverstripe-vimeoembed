@@ -16,12 +16,19 @@ class VimeoDataObject extends DataObject {
 	);
 
 	public static $casting = array(
-		"FullName" => "Text"
+		"FullName" => "Text",
+		"Icon" => "HTMLText",
+		"IconLink" => "Varchar"
 	);
 
 	public static $searchable_fields = array(
 		"Title" => "PartialMatchFilter",
 		"VimeoCode"
+	);
+
+	public static $summary_fields = array(
+		"Icon" => "Icon",
+		"Title" => "Title",
 	);
 
 	public static $singular_name = "Vimeo Video";
@@ -95,7 +102,7 @@ class VimeoDataObject extends DataObject {
 	private static $add_video_array_done = false;
 		static function add_video($code, $title) {self::$add_video_array[$code] = $title;}
 
-	protected $data = array();
+	protected $dataAsArray = array();
 
 	protected $variables = array(
 		"type",
@@ -123,13 +130,37 @@ class VimeoDataObject extends DataObject {
 		return $this->Title." (".$this->VimeoCode.")";
 	}
 
+
+	function getIcon(){
+		if(!count($this->dataAsArray)) {
+			$this->dataAsArray = unserialize($this->Data);
+		}
+		if(!empty($this->dataAsArray["thumbnail_url"])) {
+			$v = "<img src=\"".$this->dataAsArray["thumbnail_url"]."\" width=\"".$this->dataAsArray["thumbnail_width"]."\" height=\"".$this->dataAsArray["thumbnail_height"]."\" alt=\"".Convert::raw2att($this->Title)."\"/>";
+		}
+		else {
+			$v = "[".$this->Title."]";
+		}
+		return DBField::create("HTMLText", $v);
+	}
+
+	function getIconLink(){
+		if(!count($this->dataAsArray)) {
+			$this->dataAsArray = unserialize($this->Data);
+		}
+		if(!empty($this->dataAsArray["thumbnail_url"])) {
+			return DBField::create("Varchar", $this->dataAsArray["thumbnail_url"]);
+		}
+		return null;
+	}
+
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->removeByName("HTMLSnippet");
 		$fields->removeByName("Data");
 		$fields->addFieldToTab("Root.Main", new LiteralField("HTMLSnippet", $this->HTML($noCaching = true)));
-		if(is_array($this->data) && count($this->data)) {
-			foreach($this->data as $name => $value) {
+		if(is_array($this->dataAsArray) && count($this->dataAsArray)) {
+			foreach($this->dataAsArray as $name => $value) {
 				$fields->addFieldToTab("Root.Details", new ReadOnlyField($name, $name, $value));
 			}
 		}
@@ -144,7 +175,10 @@ class VimeoDataObject extends DataObject {
 	}
 
 	protected function updateData() {
-		if($this->VimeoCode && !$this->doNotRetrieveData) {
+		if($this->doNotRetrieveData) {
+
+		}
+		elseif($this->VimeoCode) {
 			$get = array();
 			if($width = self::get_width()) {$get["width"] = $width;}
 			if($max_width = self::get_maxwidth()) {$get["maxwidth"] = $max_width;}
@@ -177,14 +211,14 @@ class VimeoDataObject extends DataObject {
 			foreach($this->variables as $variable) {
 				$data_array = $this->get_value_by_path($array, 'oembed/'.$variable);
 				if(isset($data_array["name"]) && isset($data_array["value"])) {
-					$this->data[$data_array["name"]] = $data_array["value"];
+					$this->dataAsArray[$data_array["name"]] = $data_array["value"];
 				}
 				else {
-					$this->data[$variable] = null;
+					$this->dataAsArray[$variable] = null;
 				}
 			}
-			$this->Data = serialize($this->data);
-			$this->HTMLSnippet = $this->data["html"];
+			$this->Data = serialize($this->dataAsArray);
+			$this->HTMLSnippet = $this->dataAsArray["html"];
 			$this->write();
 		}
 	}
@@ -292,6 +326,7 @@ class VimeoDataObject extends DataObject {
 		}
 		return $tmp_arr;
 	}
+
 
 
 }
