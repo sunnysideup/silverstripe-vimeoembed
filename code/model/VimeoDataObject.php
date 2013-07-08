@@ -141,7 +141,7 @@ class VimeoDataObject extends DataObject {
 		else {
 			$v = "[".$this->Title."]";
 		}
-		return DBField::create("HTMLText", $v);
+		return DBField::create_field("HTMLText", $v);
 	}
 
 	function getIconLink(){
@@ -149,7 +149,7 @@ class VimeoDataObject extends DataObject {
 			$this->dataAsArray = unserialize($this->Data);
 		}
 		if(!empty($this->dataAsArray["thumbnail_url"])) {
-			return DBField::create("Varchar", $this->dataAsArray["thumbnail_url"]);
+			return DBField::create_field("Varchar", $this->dataAsArray["thumbnail_url"]);
 		}
 		return null;
 	}
@@ -236,7 +236,7 @@ class VimeoDataObject extends DataObject {
 		if(!self::$add_video_array_done) {
 			if(is_array(self::$add_video_array) && count(self::$add_video_array)) {
 				foreach(self::$add_video_array as $code => $title) {
-					if(!DataObject::get_one("VimeoDataObject", "VimeoCode = ".$code)) {
+					if(!VimeoDataObject::get()->filter(array("VimeoCode" => $code))->First()) {
 						$vimeoDataObject = new VimeoDataObject;
 						$vimeoDataObject->VimeoCode = $code;
 						$vimeoDataObject->Title = $title;

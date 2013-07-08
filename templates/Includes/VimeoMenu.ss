@@ -1,18 +1,18 @@
-<% if VimeosInThisSection %>
+<% if VimeosInThisSection.count %>
 <div class="vimeosInThisSection typography">
 	<h4>Also see ... </h4>
 <ul>
-<% control VimeosInThisSection %>
+<% loop VimeosInThisSection %>
 <% if VimeoDataObject %>
 <li>
 	<a href="$Link" title="$VimeoDataObject.Title.ATT">
-		<% control VimeoDataObject %>
+		<% with VimeoDataObject %>
 		<img src="$IconLink.URL" alt="$Title.ATT" height="50" />
-		<% end_control %>
+		<% end_with %>
 	</a>
 </li>
 <% end_if %>
-<% end_control %>
+<% end_loop %>
 </ul>
 <div class="clear"></div>
 </div>

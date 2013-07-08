@@ -1,6 +1,6 @@
 <?php
 
-class VimeoDOD extends DataObjectDecorator {
+class VimeoDOD extends DataExtension {
 
 	function extraStatics () {
 		return array(
@@ -16,11 +16,11 @@ class VimeoDOD extends DataObjectDecorator {
 		static function set_include_vimeo_in_page_classes($v){self::$include_vimeo_in_page_classes = $v;}
 		static function get_include_vimeo_in_page_classes(){return self::$include_vimeo_in_page_classes;}
 
-	public function updateCMSFields(&$fields) {
+	public function updateCMSFields(FieldList $fields) {
 		if($this->HasVimeo()) {
-			$listObject = DataObject::get("VimeoDataObject");
-			if($listObject) {
-				$tab = _t("VimeoDOD.TAB", "Root.Content.Vimeo");
+			$listObject = VimeoDataObject::get();
+			if($listObject->count()) {
+				$tab = _t("VimeoDOD.TAB", "Root.Vimeo");
 				$list = $listObject->toDropDownMap($index = 'ID', $titleField = 'Title', $emptyString = _t("VimeoDOD.EMPTYSTRING", "--- select vimeo video ---"), $sort = false);
 				$fields->addFieldToTab($tab, new DropdownField("VimeoDataObjectID", _t("VimeoDOD.URLFIELD", "Video"), $list));
 				$linkToModelAdmin = _t("VimeoDOD.LINKTOMODELADMIN", "To edit your videos, please go to <a href=\"/admin/vimeos\">Vimeo Editing Page</a>.");
@@ -42,11 +42,11 @@ class VimeoDOD extends DataObjectDecorator {
 	}
 
 	function VimeosInThisSection(){
-		return DataObject::get("Page", "
-			\"ParentID\" IN(".($this->owner->ParentID-0).", ".($this->owner->ID - 0).") AND
-			\"VimeoDataObjectID\" > 0 AND
-			\"ShowInSearch\" = 1"
-		);
+		return Page::get()->filter(array(
+			"ParentID" => array(intval($this->owner->ParentID), intval($this->owner->ID)),
+			"VimeoDataObjectID:GreaterThan" => 0,
+			"ShowInSearch" => 1
+		));
 	}
 
 }
