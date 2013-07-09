@@ -2,11 +2,7 @@
 
 class VimeoDOD extends DataExtension {
 
-	function extraStatics () {
-		return array(
-			"has_one" => array("VimeoDataObject" => "VimeoDataObject")
-		);
-	}
+	protected static $has_one = array("VimeoDataObject" => "VimeoDataObject");
 
 	protected static $exclude_vimeo_from_page_classes = array();
 		static function set_exclude_vimeo_from_page_classes($v){self::$exclude_vimeo_from_page_classes = $v;}
