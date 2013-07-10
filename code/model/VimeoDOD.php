@@ -17,7 +17,7 @@ class VimeoDOD extends DataExtension {
 			$listObject = VimeoDataObject::get();
 			if($listObject->count()) {
 				$tab = _t("VimeoDOD.TAB", "Root.Vimeo");
-				$list = $listObject->toDropDownMap($index = 'ID', $titleField = 'Title', $emptyString = _t("VimeoDOD.EMPTYSTRING", "--- select vimeo video ---"), $sort = false);
+				$list = array( 0 => _t("VimeoDOD.EMPTYSTRING", "--- select vimeo video ---")) + $listObject->map($index = 'ID', $titleField = 'Title')->toArray();
 				$fields->addFieldToTab($tab, new DropdownField("VimeoDataObjectID", _t("VimeoDOD.URLFIELD", "Video"), $list));
 				$linkToModelAdmin = _t("VimeoDOD.LINKTOMODELADMIN", "To edit your videos, please go to <a href=\"/admin/vimeos\">Vimeo Editing Page</a>.");
 				$fields->addFieldToTab($tab, new LiteralField("VimeoDataObjectIDEDIT", "<p>$linkToModelAdmin</p>"));
