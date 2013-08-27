@@ -15,90 +15,90 @@ class VimeoDataObject extends DataObject {
 		"Data" => "Text"
 	);
 
-	public static $casting = array(
+	private static $casting = array(
 		"FullName" => "Text",
 		"Icon" => "HTMLText",
 		"IconLink" => "Varchar"
 	);
 
-	public static $searchable_fields = array(
+	private static $searchable_fields = array(
 		"Title" => "PartialMatchFilter",
 		"VimeoCode"
 	);
 
-	public static $summary_fields = array(
+	private static $summary_fields = array(
 		"Icon" => "Icon",
 		"Title" => "Title",
 	);
 
-	public static $singular_name = "Vimeo Video";
+	private static $singular_name = "Vimeo Video";
 
-	public static $plural_name = "Vimeo Videos";
+	private static $plural_name = "Vimeo Videos";
 
-	public static $default_sort = "Title ASC";
+	private static $default_sort = "Title ASC";
 
-	protected static $vimeo_base_url = "http://vimeo.com/api/oembed.xml?url=http%3A//vimeo.com/";//The exact width of the video. Defaults to original size.
+	private static $vimeo_base_url = "http://vimeo.com/api/oembed.xml?url=http%3A//vimeo.com/";//The exact width of the video. Defaults to original size.
 		static function set_vimeo_base_url($v){self::$vimeo_base_url = $v;}
 		static function get_vimeo_base_url(){return self::$vimeo_base_url;}
 
-	protected static $width = null;//The exact width of the video. Defaults to original size.
+	private static $width = null;//The exact width of the video. Defaults to original size.
 		static function set_width($v){self::$width = $v;}
 		static function get_width(){return self::$width;}
 
-	protected static $maxwidth = null;////Same as width, but video will not exceed original size.
+	private static $maxwidth = null;////Same as width, but video will not exceed original size.
 		static function set_maxwidth($v){self::$maxwidth = $v;}
 		static function get_maxwidth(){return self::$maxwidth;}
 
-	protected static $height = null;//The exact height of the video. Defaults to original size.
+	private static $height = null;//The exact height of the video. Defaults to original size.
 		static function set_height($v){self::$height = $v;}
 		static function get_height(){return self::$height;}
 
-	protected static $maxheight = null;//Same as height, but video will not exceed original size.
+	private static $maxheight = null;//Same as height, but video will not exceed original size.
 		static function set_maxheight($v){self::$maxheight = $v;}
 		static function get_maxheight(){return self::$maxheight;}
 
-	protected static $byline = null;//Show the byline on the video. Defaults to true.
+	private static $byline = null;//Show the byline on the video. Defaults to true.
 		static function set_byline($v){self::$byline = $v;}
 		static function get_byline(){return self::$byline;}
 
-	protected static $title = null;//Show the title on the video. Defaults to true.
+	private static $title = null;//Show the title on the video. Defaults to true.
 		static function set_title($v){self::$title = $v;}
 		static function get_title(){return self::$title;}
 
-	protected static $portrait = null;//// Show the user's portrait on the video. Defaults to true.
+	private static $portrait = null;//// Show the user's portrait on the video. Defaults to true.
 		static function set_portrait($v){self::$portrait = $v;}
 		static function get_portrait(){return self::$portrait;}
 
-	protected static $color = null;// Specify the color of the video controls.
+	private static $color = null;// Specify the color of the video controls.
 		static function set_color($v){self::$color = $v;}
 		static function get_color(){return self::$color;}
 
-	protected static $callback = null;//When returning JSON, wrap in this function.
+	private static $callback = null;//When returning JSON, wrap in this function.
 		static function set_callback($v){self::$callback = $v;}
 		static function get_callback(){return self::$callback;}
 
-	protected static $autoplay = null;//Automatically start playback of the video. Defaults to false.
+	private static $autoplay = null;//Automatically start playback of the video. Defaults to false.
 		static function set_autoplay($v){self::$autoplay = $v;}
 		static function get_autoplay(){return self::$autoplay;}
 
-	protected static $xhtml = null;// Make the embed code XHTML compliant. Defaults to true.
+	private static $xhtml = null;// Make the embed code XHTML compliant. Defaults to true.
 		static function set_xhtml($v){self::$xhtml = $v;}
 		static function get_xhtml(){return self::$xhtml;}
 
-	protected static $api = null;// Enable the Javascript API for Moogaloop. Defaults to false.
+	private static $api = null;// Enable the Javascript API for Moogaloop. Defaults to false.
 		static function set_api($v){self::$api = $v;}
 		static function get_api(){return self::$api;}
 
-	protected static $wmode = null;//add the "wmode" parameter. Can be either transparent or opaque.
+	private static $wmode = null;//add the "wmode" parameter. Can be either transparent or opaque.
 		static function set_wmode($v){self::$wmode = $v;}
 		static function get_wmode(){return self::$wmode;}
 
-	protected static $iframe;// Use our new embed code. Defaults to true. NEW!
+	private static $iframe;// Use our new embed code. Defaults to true. NEW!
 		static function set_iframe($v){self::$iframe = $v;}
 		static function get_iframe(){return self::$iframe;}
 
 
-	protected static $add_video_array = array();
+	private static $add_video_array = array();
 	private static $add_video_array_done = false;
 		static function add_video($code, $title) {self::$add_video_array[$code] = $title;}
 

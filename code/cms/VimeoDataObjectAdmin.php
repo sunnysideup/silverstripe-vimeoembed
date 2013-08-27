@@ -7,11 +7,11 @@
 
 class VimeoDataObjectAdmin extends ModelAdmin {
 
-	public static $managed_models = array("VimeoDataObject");
+	private static $managed_models = array("VimeoDataObject");
 
-	public static $url_segment = "vimeos";
+	private static $url_segment = "vimeos";
 
-	public static $menu_title = "Vimeos";
+	private static $menu_title = "Vimeos";
 
 
 }
