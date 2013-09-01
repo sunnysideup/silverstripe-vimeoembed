@@ -2,15 +2,13 @@
 
 class VimeoDOD extends DataExtension {
 
-	private static $has_one = array("VimeoDataObject" => "VimeoDataObject");
+	private static $has_one = array(
+		"VimeoDataObject" => "VimeoDataObject"
+	);
 
 	private static $exclude_vimeo_from_page_classes = array();
-		static function set_exclude_vimeo_from_page_classes($v){self::$exclude_vimeo_from_page_classes = $v;}
-		static function get_exclude_vimeo_from_page_classes (){return self::$exclude_vimeo_from_page_classes;}
 
 	private static $include_vimeo_in_page_classes = array();
-		static function set_include_vimeo_in_page_classes($v){self::$include_vimeo_in_page_classes = $v;}
-		static function get_include_vimeo_in_page_classes(){return self::$include_vimeo_in_page_classes;}
 
 	public function updateCMSFields(FieldList $fields) {
 		if($this->HasVimeo()) {

@@ -1,0 +1,28 @@
+########################
+# START VIMEOEMBED
+########################
+
+VimeoDOD:
+  exclude_vimeo_from_page_classes: []
+  include_vimeo_in_page_classes: []
+
+VimeoDataObject:
+  vimeo_base_url: ""
+  width: bla
+  maxwidth: bla
+  height: bla
+  maxheight: bla
+  byline: bla
+  title: bla
+  portrait: bla
+  color: bla
+  callback: bla
+  autoplay: bla
+  xhtml: bla
+  api: bla
+  wmode: bla
+  iframe: bla
+
+########################
+# END VIMEOEMBED
+########################

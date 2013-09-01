@@ -38,69 +38,34 @@ class VimeoDataObject extends DataObject {
 	private static $default_sort = "Title ASC";
 
 	private static $vimeo_base_url = "http://vimeo.com/api/oembed.xml?url=http%3A//vimeo.com/";//The exact width of the video. Defaults to original size.
-		static function set_vimeo_base_url($v){self::$vimeo_base_url = $v;}
-		static function get_vimeo_base_url(){return self::$vimeo_base_url;}
 
 	private static $width = null;//The exact width of the video. Defaults to original size.
-		static function set_width($v){self::$width = $v;}
-		static function get_width(){return self::$width;}
 
 	private static $maxwidth = null;////Same as width, but video will not exceed original size.
-		static function set_maxwidth($v){self::$maxwidth = $v;}
-		static function get_maxwidth(){return self::$maxwidth;}
 
 	private static $height = null;//The exact height of the video. Defaults to original size.
-		static function set_height($v){self::$height = $v;}
-		static function get_height(){return self::$height;}
 
 	private static $maxheight = null;//Same as height, but video will not exceed original size.
-		static function set_maxheight($v){self::$maxheight = $v;}
-		static function get_maxheight(){return self::$maxheight;}
 
 	private static $byline = null;//Show the byline on the video. Defaults to true.
-		static function set_byline($v){self::$byline = $v;}
-		static function get_byline(){return self::$byline;}
 
 	private static $title = null;//Show the title on the video. Defaults to true.
-		static function set_title($v){self::$title = $v;}
-		static function get_title(){return self::$title;}
 
 	private static $portrait = null;//// Show the user's portrait on the video. Defaults to true.
-		static function set_portrait($v){self::$portrait = $v;}
-		static function get_portrait(){return self::$portrait;}
 
 	private static $color = null;// Specify the color of the video controls.
-		static function set_color($v){self::$color = $v;}
-		static function get_color(){return self::$color;}
 
 	private static $callback = null;//When returning JSON, wrap in this function.
-		static function set_callback($v){self::$callback = $v;}
-		static function get_callback(){return self::$callback;}
 
 	private static $autoplay = null;//Automatically start playback of the video. Defaults to false.
-		static function set_autoplay($v){self::$autoplay = $v;}
-		static function get_autoplay(){return self::$autoplay;}
 
 	private static $xhtml = null;// Make the embed code XHTML compliant. Defaults to true.
-		static function set_xhtml($v){self::$xhtml = $v;}
-		static function get_xhtml(){return self::$xhtml;}
 
 	private static $api = null;// Enable the Javascript API for Moogaloop. Defaults to false.
-		static function set_api($v){self::$api = $v;}
-		static function get_api(){return self::$api;}
 
 	private static $wmode = null;//add the "wmode" parameter. Can be either transparent or opaque.
-		static function set_wmode($v){self::$wmode = $v;}
-		static function get_wmode(){return self::$wmode;}
 
 	private static $iframe;// Use our new embed code. Defaults to true. NEW!
-		static function set_iframe($v){self::$iframe = $v;}
-		static function get_iframe(){return self::$iframe;}
-
-
-	private static $add_video_array = array();
-	private static $add_video_array_done = false;
-		static function add_video($code, $title) {self::$add_video_array[$code] = $title;}
 
 	protected $dataAsArray = array();
 
@@ -180,22 +145,22 @@ class VimeoDataObject extends DataObject {
 		}
 		elseif($this->VimeoCode) {
 			$get = array();
-			if($width = self::get_width()) {$get["width"] = $width;}
-			if($max_width = self::get_maxwidth()) {$get["maxwidth"] = $max_width;}
-			if($height = self::get_height()) {$get["height"] = $height;}
-			if($maxheight = self::get_maxheight()) {$get["maxheight"] = $maxheight;}
-			if($byline = self::get_byline()) {$get["byline"] = $byline;}
-			if($title = self::get_title()) {$get["title"] = $title;}
-			if($portrait = self::get_portrait()) {$get["portrait"] = $portrait;}
-			if($color = self::get_color()) {$get["color"] = $color;}
-			if($callback = self::get_callback()) {$get["callback"] = $callback;}
-			if($autoplay = self::get_autoplay ()) {$get["autoplay"] = $autoplay;}
-			if($xhtml = self::get_xhtml()) {$get["xhtml"] = $xhtml;}
-			if($api = self::get_api()) {$get["api"] = $api;}
-			if($wmode = self::get_wmode()) {$get["wmode"] = $wmode;}
-			if($iframe = self::get_iframe()) {$get["iframe"] = $iframe;}
+			if($width = $this->Config()->get("width")) {$get["width"] = $width;}
+			if($max_width = $this->Config()->get("maxwidth")) {$get["maxwidth"] = $max_width;}
+			if($height = $this->Config()->get("height")) {$get["height"] = $height;}
+			if($maxheight = $this->Config()->get("maxheight")) {$get["maxheight"] = $maxheight;}
+			if($byline = $this->Config()->get("byline")) {$get["byline"] = $byline;}
+			if($title = $this->Config()->get("title")) {$get["title"] = $title;}
+			if($portrait = $this->Config()->get("portrait")) {$get["portrait"] = $portrait;}
+			if($color = $this->Config()->get("color")) {$get["color"] = $color;}
+			if($callback = $this->Config()->get("callback")) {$get["callback"] = $callback;}
+			if($autoplay = $this->Config()->get("autoplay ")) {$get["autoplay"] = $autoplay;}
+			if($xhtml = $this->Config()->get("xhtml")) {$get["xhtml"] = $xhtml;}
+			if($api = $this->Config()->get("api")) {$get["api"] = $api;}
+			if($wmode = $this->Config()->get("wmode")) {$get["wmode"] = $wmode;}
+			if($iframe = $this->Config()->get("iframe")) {$get["iframe"] = $iframe;}
 			$url = '';
-			$url .= self::get_vimeo_base_url().$this->VimeoCode;
+			$url .= $this->Config()->get("vimeo_base_url").$this->VimeoCode;
 			if(is_array($get) && count($get)) {
 				foreach($get as $key => $value) {
 					$get[$key] = $key."=".urlencode($value);
@@ -229,24 +194,6 @@ class VimeoDataObject extends DataObject {
 		$this->VimeoCode = intval($this->VimeoCode);
 		$this->doNotRetrieveData = true;
 		$this->updateData();
-	}
-
-	function requireDefaultRecords() {
-		parent::requireDefaultRecords();
-		if(!self::$add_video_array_done) {
-			if(is_array(self::$add_video_array) && count(self::$add_video_array)) {
-				foreach(self::$add_video_array as $code => $title) {
-					if(!VimeoDataObject::get()->filter(array("VimeoCode" => $code))->First()) {
-						$vimeoDataObject = new VimeoDataObject;
-						$vimeoDataObject->VimeoCode = $code;
-						$vimeoDataObject->Title = $title;
-						$vimeoDataObject->write();
-						DB::alteration_message("added VIMEO: $title", "created");
-					}
-				}
-			}
-		}
-		self::$add_video_array_done = true;
 	}
 
 
