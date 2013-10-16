@@ -8,7 +8,7 @@
 
 class VimeoDataObject extends DataObject {
 
-	static $db = array(
+	private static $db = array(
 		"Title" => "Varchar(100)",
 		"VimeoCode" => "Int",
 		"HTMLSnippet" => "HTMLText",
@@ -98,6 +98,8 @@ class VimeoDataObject extends DataObject {
 
 	function getIcon(){
 		if(!count($this->dataAsArray)) {
+			//remove non-ascii characters as they were causing havoc...
+			$this->Data = preg_replace('/[^(\x20-\x7F)]*/','', $this->Data);
 			$this->dataAsArray = unserialize($this->Data);
 		}
 		if(!empty($this->dataAsArray["thumbnail_url"])) {
