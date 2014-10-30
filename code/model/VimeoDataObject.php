@@ -100,7 +100,7 @@ class VimeoDataObject extends DataObject {
 		if(!count($this->dataAsArray)) {
 			//remove non-ascii characters as they were causing havoc...
 			$this->Data = preg_replace('/[^(\x20-\x7F)]*/','', $this->Data);
-			$this->dataAsArray = unserialize($this->Data);
+			//$this->dataAsArray = unserialize($this->Data);
 		}
 		if(!empty($this->dataAsArray["thumbnail_url"])) {
 			$v = "<img src=\"".$this->dataAsArray["thumbnail_url"]."\" width=\"".$this->dataAsArray["thumbnail_width"]."\" height=\"".$this->dataAsArray["thumbnail_height"]."\" alt=\"".Convert::raw2att($this->Title)."\"/>";
@@ -113,7 +113,7 @@ class VimeoDataObject extends DataObject {
 
 	function getIconLink(){
 		if(!count($this->dataAsArray)) {
-			$this->dataAsArray = unserialize($this->Data);
+			//$this->dataAsArray = unserialize($this->Data);
 		}
 		if(!empty($this->dataAsArray["thumbnail_url"])) {
 			return DBField::create_field("Varchar", $this->dataAsArray["thumbnail_url"]);
