@@ -95,6 +95,29 @@ class VimeoDataObject extends DataObject {
 		return $this->Title." (".$this->VimeoCode.")";
 	}
 
+	/**
+	 * alias for getVariable
+	 */
+	function MetaDataVariable($name){
+		return $this->getMetaDataVariable($name);
+	}
+
+	/**
+	 *
+	 * @param String - name of variable
+	 *
+	 * @return Varchar Object
+	 */
+	function getMetaDataVariable($name){
+		$name = strtolower($name);
+		if(!count($this->dataAsArray)) {
+			//$this->dataAsArray = unserialize($this->Data);
+		}
+		if(!empty($this->dataAsArray[$name])) {
+			return DBField::create_field("Varchar", $this->dataAsArray[$name]);
+		}
+		return null;
+	}
 
 	function getIcon(){
 		if(!count($this->dataAsArray)) {
