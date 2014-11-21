@@ -91,12 +91,18 @@ class VimeoDataObject extends DataObject {
 
 	private $doNotRetrieveData = false;
 
+	/**
+	 * casted variable
+	 * @return string
+	 */
 	function getFullName() {
 		return $this->Title." (".$this->VimeoCode.")";
 	}
 
 	/**
 	 * alias for getVariable
+	 * @param String $name
+	 * @return Varchar
 	 */
 	function MetaDataVariable($name){
 		return $this->getMetaDataVariable($name);
@@ -111,7 +117,7 @@ class VimeoDataObject extends DataObject {
 	function getMetaDataVariable($name){
 		$name = strtolower($name);
 		if(!count($this->dataAsArray)) {
-			//$this->dataAsArray = unserialize($this->Data);
+			$this->dataAsArray = $this->safelyUnserialize($this->Data);
 		}
 		if(!empty($this->dataAsArray[$name])) {
 			return DBField::create_field("Varchar", $this->dataAsArray[$name]);
@@ -123,7 +129,7 @@ class VimeoDataObject extends DataObject {
 		if(!count($this->dataAsArray)) {
 			//remove non-ascii characters as they were causing havoc...
 			$this->Data = preg_replace('/[^(\x20-\x7F)]*/','', $this->Data);
-			//$this->dataAsArray = unserialize($this->Data);
+			$this->dataAsArray = $this->safelyUnserialize($this->Data);
 		}
 		if(!empty($this->dataAsArray["thumbnail_url"])) {
 			$v = "<img src=\"".$this->dataAsArray["thumbnail_url"]."\" width=\"".$this->dataAsArray["thumbnail_width"]."\" height=\"".$this->dataAsArray["thumbnail_height"]."\" alt=\"".Convert::raw2att($this->Title)."\"/>";
@@ -136,7 +142,7 @@ class VimeoDataObject extends DataObject {
 
 	function getIconLink(){
 		if(!count($this->dataAsArray)) {
-			//$this->dataAsArray = unserialize($this->Data);
+			$this->dataAsArray = $this->safelyUnserialize($this->Data);
 		}
 		if(!empty($this->dataAsArray["thumbnail_url"])) {
 			return DBField::create_field("Varchar", $this->dataAsArray["thumbnail_url"]);
@@ -207,7 +213,7 @@ class VimeoDataObject extends DataObject {
 					$this->dataAsArray[$variable] = null;
 				}
 			}
-			$this->Data = serialize($this->dataAsArray);
+			$this->Data = $this->safelySerialize($this->dataAsArray);
 			$this->HTMLSnippet = $this->dataAsArray["html"];
 			$this->write();
 		}
@@ -299,6 +305,43 @@ class VimeoDataObject extends DataObject {
 		return $tmp_arr;
 	}
 
+	/**
+	 *
+	 * @param String $serializedData
+	 *
+	 * @return String
+	 */
+	function safelyUnserialize($serializedData){
+		try{
+			$fixed = unserialize(base64_decode($serializedData));
+			if(is_array($fixed)) {
+				return $fixed;
+			}
+			else {
+				return unserialize($serializedData);
+			}
+		}
+		catch(Exception $e) {
+			$fixed = preg_replace_callback (
+				'!s:(\d+):"(.*?)";!',
+				function($match) {
+					return ($match[1] == strlen($match[2])) ? $match[0] : 's:' . strlen($match[2]) . ':"' . $match[2] . '";';
+				},
+				$serializedData
+			);
+		}
+		return $fixed;
+	}
+
+	/**
+	 *
+	 * @param Array $dataAsArray
+	 *
+	 * @return String
+	 */
+	function safelySerialize($dataAsArray){
+		return base64_encode(serialize($dataAsArray));
+	}
 
 
 }
