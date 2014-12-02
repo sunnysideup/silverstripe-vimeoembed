@@ -170,9 +170,14 @@ class VimeoDataObject extends DataObject {
 		return $this->HTMLSnippet;
 	}
 
+	/**
+	 * retrieves data from Vimeo Site
+	 *
+	 *
+	 */
 	protected function updateData() {
 		if($this->doNotRetrieveData) {
-
+			//do nothing
 		}
 		elseif($this->VimeoCode) {
 			$get = array();
@@ -309,9 +314,11 @@ class VimeoDataObject extends DataObject {
 	 *
 	 * @param String $serializedData
 	 *
-	 * @return String
+	 * @return Array
 	 */
 	function safelyUnserialize($serializedData){
+		return unserialize(base64_decode($serializedData));
+		//this code needs checking.
 		try{
 			$fixed = unserialize(base64_decode($serializedData));
 			if(is_array($fixed)) {
@@ -338,9 +345,10 @@ class VimeoDataObject extends DataObject {
 	 * @param Array $dataAsArray
 	 *
 	 * @return String
+	 *
 	 */
 	function safelySerialize($dataAsArray){
-		return base64_encode(serialize($dataAsArray));
+		return serialize(base64_encode($dataAsArray));
 	}
 
 
