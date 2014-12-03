@@ -89,7 +89,26 @@ class VimeoDataObject extends DataObject {
 		"video_id"
 	);
 
+	/**
+	 * do not retrieve data from vimeo server ...
+	 * for internal use only
+	 * @var Boolean
+	 */
 	private $doNotRetrieveData = false;
+
+	function getCMSFields() {
+		$fields = parent::getCMSFields();
+		$fields->removeByName("HTMLSnippet");
+		$fields->removeByName("Data");
+		$fields->addFieldToTab("Root.Main", new LiteralField("HTMLSnippet", $this->HTML($noCaching = false)));
+		$this->getDataAsArray();
+		if(is_array($this->dataAsArray) && count($this->dataAsArray)) {
+			foreach($this->dataAsArray as $name => $value) {
+				$fields->addFieldToTab("Root.Details", new ReadOnlyField($name, $name, $value));
+			}
+		}
+		return $fields;
+	}
 
 	/**
 	 * casted variable
@@ -115,16 +134,17 @@ class VimeoDataObject extends DataObject {
 	 * @return Varchar Object
 	 */
 	function getMetaDataVariable($name){
-		$name = strtolower($name);
-		if(!count($this->dataAsArray)) {
-			$this->dataAsArray = $this->safelyUnserialize($this->Data);
-		}
+		$this->getDataAsArray();
 		if(!empty($this->dataAsArray[$name])) {
 			return DBField::create_field("Varchar", $this->dataAsArray[$name]);
 		}
 		return null;
 	}
 
+	/**
+	 * return icon as <img tag>
+	 * @return String
+	 */
 	function getIcon(){
 		if(!count($this->dataAsArray)) {
 			//remove non-ascii characters as they were causing havoc...
@@ -140,29 +160,22 @@ class VimeoDataObject extends DataObject {
 		return DBField::create_field("HTMLText", $v);
 	}
 
+	/**
+	 * returns icon as myimage.png
+	 * @return String
+	 */
 	function getIconLink(){
-		if(!count($this->dataAsArray)) {
-			$this->dataAsArray = $this->safelyUnserialize($this->Data);
-		}
+		$this->getDataAsArray();
 		if(!empty($this->dataAsArray["thumbnail_url"])) {
 			return DBField::create_field("Varchar", $this->dataAsArray["thumbnail_url"]);
 		}
 		return null;
 	}
 
-	function getCMSFields() {
-		$fields = parent::getCMSFields();
-		$fields->removeByName("HTMLSnippet");
-		$fields->removeByName("Data");
-		$fields->addFieldToTab("Root.Main", new LiteralField("HTMLSnippet", $this->HTML($noCaching = true)));
-		if(is_array($this->dataAsArray) && count($this->dataAsArray)) {
-			foreach($this->dataAsArray as $name => $value) {
-				$fields->addFieldToTab("Root.Details", new ReadOnlyField($name, $name, $value));
-			}
-		}
-		return $fields;
-	}
-
+	/**
+	 * returns the HTML Embed code
+	 * @return String
+	 */
 	function HTML($noCaching = false) {
 		if($noCaching || strlen($this->HTMLSnippet) < 17 || !$this->Data || isset($_GET["flush"])) {//
 			$this->updateData();
@@ -171,11 +184,28 @@ class VimeoDataObject extends DataObject {
 	}
 
 	/**
+	 * turns the saved serialized data into an array to return
+	 * if there is no data then it will try to retrieve and save it
+	 * then return it.
+	 * @return Array
+	 */
+	protected function getDataAsArray(){
+		if($this->dataAsArray) {
+			return $this->dataAsArray;
+		}
+		if(!$this->Data) {
+			$this->updateData();
+		}
+		$this->dataAsArray = $this->safelyUnserialize($this->Data);
+		return $this->dataAsArray;
+	}
+
+	/**
 	 * retrieves data from Vimeo Site
 	 *
-	 *
+	 * @return Array
 	 */
-	protected function updateData() {
+	protected function updateData($writeToDatabase = true) {
 		if($this->doNotRetrieveData) {
 			//do nothing
 		}
@@ -220,16 +250,18 @@ class VimeoDataObject extends DataObject {
 			}
 			$this->Data = $this->safelySerialize($this->dataAsArray);
 			$this->HTMLSnippet = $this->dataAsArray["html"];
-			$this->write();
+			if($writeToDatabase) {
+				$this->write();
+			}
 		}
+		return $this->Data;
 	}
 
 
 	function onBeforeWrite() {
 		parent::onBeforeWrite();
 		$this->VimeoCode = intval($this->VimeoCode);
-		$this->doNotRetrieveData = true;
-		$this->updateData();
+		$this->updateData(false);
 	}
 
 
@@ -348,7 +380,7 @@ class VimeoDataObject extends DataObject {
 	 *
 	 */
 	function safelySerialize($dataAsArray){
-		return serialize(base64_encode($dataAsArray));
+		return base64_encode(serialize($dataAsArray));
 	}
 
 

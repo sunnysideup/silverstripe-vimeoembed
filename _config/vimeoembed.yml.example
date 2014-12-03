@@ -2,6 +2,12 @@
 # START VIMEOEMBED
 ########################
 
+# Optionally add Vimeo Objects to all
+# or some page types ...
+SiteTree:
+  extensions:
+    - VimeoDOD
+
 VimeoDOD:
   exclude_vimeo_from_page_classes: []
   include_vimeo_in_page_classes: []
