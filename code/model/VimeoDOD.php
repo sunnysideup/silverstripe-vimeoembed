@@ -28,7 +28,7 @@ class VimeoDOD extends DataExtension {
 		$hasVimeo = true;
 		$includeClasses = $this->owner->Config()->get("include_vimeo_in_page_classes");
 		if(count($includeClasses)) {
-			if(!in_array($this->owner->ClassName, Config::inst()->get("VimeoDOD", "include_vimeo_in_page_classes")))) {
+			if(!in_array($this->owner->ClassName, Config::inst()->get("VimeoDOD", "include_vimeo_in_page_classes"))) {
 				$hasVimeo = false;
 			}
 		}
