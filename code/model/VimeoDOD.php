@@ -25,12 +25,18 @@ class VimeoDOD extends DataExtension {
 	}
 
 	function HasVimeo() {
-		$hasVimeo = false;
-		if(in_array($this->owner->ClassName, Config::inst()->get("VimeoDOD", "include_vimeo_in_page_classes")) || !count($this->owner->Config()->get("include_vimeo_in_page_classes"))) {
-			$hasVimeo = true;
+		$hasVimeo = true;
+		$includeClasses = $this->owner->Config()->get("include_vimeo_in_page_classes");
+		if(count($includeClasses)) {
+			if(!in_array($this->owner->ClassName, Config::inst()->get("VimeoDOD", "include_vimeo_in_page_classes")))) {
+				$hasVimeo = false;
+			}
 		}
-		if(in_array($this->owner->ClassName, Config::inst()->get("VimeoDOD", "exclude_vimeo_from_page_classes"))) {
-			$hasVimeo = false;
+		$excludeClasses = Config::inst()->get("VimeoDOD", "exclude_vimeo_from_page_classes");
+		if(count($excludeClasses)) {
+			if(in_array($this->owner->ClassName, $excludeClasses)) {
+				$hasVimeo = false;
+			}
 		}
 		return $hasVimeo;
 	}
