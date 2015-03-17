@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<source xmlns="http://xml.phpdox.net/token">
+  <file xmlns="http://xml.phpdox.net/src" path="/var/www/_modules/vimeoembed/trunk/docs/en/phpdox/../../.." file="_config.php" realpath="/var/www/_modules/vimeoembed/trunk/_config.php" size="379" time="2015-03-14T10:23:24+13:00" unixtime="1426281804" sha1="29d7327f1854c25c3ba224258a08ba0c6eda46eb" relative="_config.php"/>
+  <line no="1">
+    <token name="T_OPEN_TAG">&lt;?php</token>
+  </line>
+  <line no="2">
+    <token name="T_DOC_COMMENT">/**</token>
+  </line>
+  <line no="3">
+    <token name="T_DOC_COMMENT"> * @author: Nicolaas [at] sunnysideup.co.nz</token>
+  </line>
+  <line no="4">
+    <token name="T_DOC_COMMENT"> *</token>
+  </line>
+  <line no="5">
+    <token name="T_DOC_COMMENT"> **/</token>
+  </line>
+  <line no="6"/>
+  <line no="7"/>
+  <line no="8">
+    <token name="T_COMMENT">//copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings</token>
+  </line>
+  <line no="9">
+    <token name="T_COMMENT">//===================---------------- START vimeoembed MODULE ----------------===================</token>
+  </line>
+  <line no="10">
+    <token name="T_COMMENT">//===================---------------- END vimeoembed MODULE ----------------===================</token>
+  </line>
+  <line no="11"/>
+</source>

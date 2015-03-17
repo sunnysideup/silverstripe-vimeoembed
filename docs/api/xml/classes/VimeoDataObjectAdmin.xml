@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="VimeoDataObjectAdmin" namespace="" name="VimeoDataObjectAdmin" abstract="false" final="false" start="8" end="17">
+  <file path="/var/www/_modules/vimeoembed/trunk/docs/en/phpdox/../../../code/cms" file="VimeoDataObjectAdmin.php" realpath="/var/www/_modules/vimeoembed/trunk/code/cms/VimeoDataObjectAdmin.php" size="304" time="2015-03-14T10:23:24+13:00" unixtime="1426281804" sha1="046f933f14be88acce96efa9824d9f2af513486e" relative="code/cms/VimeoDataObjectAdmin.php"/>
+  <docblock>
+    <description/>
+    <description/>
+    <author value=": Nicolaas [at] sunnysideup.co.nz"/>
+  </docblock>
+  <extends full="ModelAdmin" namespace="" name="ModelAdmin"/>
+  <member name="managed_models" type="array" visibility="private" line="10"/>
+  <member name="url_segment" type="string" default="&quot;vimeos&quot;" visibility="private" line="12"/>
+  <member name="menu_title" type="string" default="&quot;Vimeos&quot;" visibility="private" line="14"/>
+</class>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - VimeoDataObject</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">VimeoDataObject</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/code/model/VimeoDataObject.php.xhtml#line9">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>\</small>VimeoDataObject</h1>
+        <h4>author nicolaas[at]sunnysideup.co.nz</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class VimeoDataObject
+                extends <a title="DataObject" href="../classes/DataObject.xhtml">DataObject</a>
+            {<br/><ul class="none"><li>// members</li><li>private array <a href="#members">$db</a>;
+                    </li><li>private array <a href="#members">$casting</a>;
+                    </li><li>private array <a href="#members">$searchable_fields</a>;
+                    </li><li>private array <a href="#members">$summary_fields</a>;
+                    </li><li>private string <a href="#members">$singular_name</a>;
+                    </li><li>private string <a href="#members">$plural_name</a>;
+                    </li><li>private string <a href="#members">$default_sort</a>;
+                    </li><li>private string <a href="#members">$vimeo_base_url</a>;
+                    </li><li>private <a href="#members">$width</a>;
+                    </li><li>private <a href="#members">$maxwidth</a>;
+                    </li><li>private <a href="#members">$height</a>;
+                    </li><li>private <a href="#members">$maxheight</a>;
+                    </li><li>private <a href="#members">$byline</a>;
+                    </li><li>private <a href="#members">$title</a>;
+                    </li><li>private <a href="#members">$portrait</a>;
+                    </li><li>private <a href="#members">$color</a>;
+                    </li><li>private <a href="#members">$callback</a>;
+                    </li><li>private <a href="#members">$autoplay</a>;
+                    </li><li>private <a href="#members">$xhtml</a>;
+                    </li><li>private <a href="#members">$api</a>;
+                    </li><li>private <a href="#members">$wmode</a>;
+                    </li><li>private <a href="#members">$iframe</a>;
+                    </li><li>protected array <a href="#members">$dataAsArray</a>;
+                    </li><li>protected array <a href="#members">$variables</a>;
+                    </li><li>private <span title="Boolean">Boolean</span> <a href="#members">$doNotRetrieveData</a>;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="VimeoDataObject" href="../classes/VimeoDataObject/getCMSFields.xhtml">getCMSFields</a>()
+                    </li><li>public string <a title="VimeoDataObject" href="../classes/VimeoDataObject/getFullName.xhtml">getFullName</a>()
+                    </li><li>public Varchar <a title="VimeoDataObject" href="../classes/VimeoDataObject/MetaDataVariable.xhtml">MetaDataVariable</a>()
+                    </li><li>public Varchar <a title="VimeoDataObject" href="../classes/VimeoDataObject/getMetaDataVariable.xhtml">getMetaDataVariable</a>()
+                    </li><li>public String <a title="VimeoDataObject" href="../classes/VimeoDataObject/getIcon.xhtml">getIcon</a>()
+                    </li><li>public String <a title="VimeoDataObject" href="../classes/VimeoDataObject/getIconLink.xhtml">getIconLink</a>()
+                    </li><li>public String <a title="VimeoDataObject" href="../classes/VimeoDataObject/HTML.xhtml">HTML</a>()
+                    </li><li>protected Array <a title="VimeoDataObject" href="../classes/VimeoDataObject/getDataAsArray.xhtml">getDataAsArray</a>()
+                    </li><li>protected Array <a title="VimeoDataObject" href="../classes/VimeoDataObject/updateData.xhtml">updateData</a>()
+                    </li><li>public void <a title="VimeoDataObject" href="../classes/VimeoDataObject/onBeforeWrite.xhtml">onBeforeWrite</a>()
+                    </li><li>private void <a title="VimeoDataObject" href="../classes/VimeoDataObject/my_xml2array.xhtml">my_xml2array</a>()
+                    </li><li>private void <a title="VimeoDataObject" href="../classes/VimeoDataObject/get_value_by_path.xhtml">get_value_by_path</a>()
+                    </li><li>public Array <a title="VimeoDataObject" href="../classes/VimeoDataObject/safelyUnserialize.xhtml">safelyUnserialize</a>()
+                    </li><li>public String <a title="VimeoDataObject" href="../classes/VimeoDataObject/safelySerialize.xhtml">safelySerialize</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>
+              <a href="../classes/DataObject.xhtml">DataObject</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>private</h4>
+          <ul class="members">
+            <li id="api">
+              <strong>$api</strong>
+            </li>
+            <li id="autoplay">
+              <strong>$autoplay</strong>
+            </li>
+            <li id="byline">
+              <strong>$byline</strong>
+            </li>
+            <li id="callback">
+              <strong>$callback</strong>
+            </li>
+            <li id="casting">
+              <strong>$casting</strong>
+            </li>
+            <li id="color">
+              <strong>$color</strong>
+            </li>
+            <li id="db">
+              <strong>$db</strong>
+            </li>
+            <li id="default_sort">
+              <strong>$default_sort</strong>
+            </li>
+            <li id="doNotRetrieveData"><strong>$doNotRetrieveData</strong>
+                —
+                <a href="#">Boolean</a><br/><span class="indent">do not retrieve data from vimeo server ...</span></li>
+            <li id="height">
+              <strong>$height</strong>
+            </li>
+            <li id="iframe">
+              <strong>$iframe</strong>
+            </li>
+            <li id="maxheight">
+              <strong>$maxheight</strong>
+            </li>
+            <li id="maxwidth">
+              <strong>$maxwidth</strong>
+            </li>
+            <li id="plural_name">
+              <strong>$plural_name</strong>
+            </li>
+            <li id="portrait">
+              <strong>$portrait</strong>
+            </li>
+            <li id="searchable_fields">
+              <strong>$searchable_fields</strong>
+            </li>
+            <li id="singular_name">
+              <strong>$singular_name</strong>
+            </li>
+            <li id="summary_fields">
+              <strong>$summary_fields</strong>
+            </li>
+            <li id="title">
+              <strong>$title</strong>
+            </li>
+            <li id="vimeo_base_url">
+              <strong>$vimeo_base_url</strong>
+            </li>
+            <li id="width">
+              <strong>$width</strong>
+            </li>
+            <li id="wmode">
+              <strong>$wmode</strong>
+            </li>
+            <li id="xhtml">
+              <strong>$xhtml</strong>
+            </li>
+          </ul>
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="dataAsArray">
+              <strong>$dataAsArray</strong>
+            </li>
+            <li id="variables">
+              <strong>$variables</strong>
+            </li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>private</h4>
+          <ul>
+            <li id="get_value_by_path">
+              <a title="VimeoDataObject" href="../classes/VimeoDataObject/get_value_by_path.xhtml">get_value_by_path()</a>
+            </li>
+            <li id="my_xml2array">
+              <a title="VimeoDataObject" href="../classes/VimeoDataObject/my_xml2array.xhtml">my_xml2array()</a>
+            </li>
+          </ul>
+          <h4>protected</h4>
+          <ul>
+            <li id="getDataAsArray"><a title="VimeoDataObject" href="../classes/VimeoDataObject/getDataAsArray.xhtml">getDataAsArray()</a>
+                — turns the saved serialized data into an array to return if there is no data then it will try to retrieve and save it then return it.</li>
+            <li id="updateData"><a title="VimeoDataObject" href="../classes/VimeoDataObject/updateData.xhtml">updateData()</a>
+                — retrieves data from Vimeo Site</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="HTML"><a title="VimeoDataObject" href="../classes/VimeoDataObject/HTML.xhtml">HTML()</a>
+                — returns the HTML Embed code</li>
+            <li id="MetaDataVariable"><a title="VimeoDataObject" href="../classes/VimeoDataObject/MetaDataVariable.xhtml">MetaDataVariable()</a>
+                — alias for getVariable</li>
+            <li id="getCMSFields">
+              <a title="VimeoDataObject" href="../classes/VimeoDataObject/getCMSFields.xhtml">getCMSFields()</a>
+            </li>
+            <li id="getFullName"><a title="VimeoDataObject" href="../classes/VimeoDataObject/getFullName.xhtml">getFullName()</a>
+                — casted variable</li>
+            <li id="getIcon"><a title="VimeoDataObject" href="../classes/VimeoDataObject/getIcon.xhtml">getIcon()</a>
+                — return icon as &lt;img tag&gt;</li>
+            <li id="getIconLink"><a title="VimeoDataObject" href="../classes/VimeoDataObject/getIconLink.xhtml">getIconLink()</a>
+                — returns icon as myimage.png</li>
+            <li id="getMetaDataVariable">
+              <a title="VimeoDataObject" href="../classes/VimeoDataObject/getMetaDataVariable.xhtml">getMetaDataVariable()</a>
+            </li>
+            <li id="onBeforeWrite">
+              <a title="VimeoDataObject" href="../classes/VimeoDataObject/onBeforeWrite.xhtml">onBeforeWrite()</a>
+            </li>
+            <li id="safelySerialize">
+              <a title="VimeoDataObject" href="../classes/VimeoDataObject/safelySerialize.xhtml">safelySerialize()</a>
+            </li>
+            <li id="safelyUnserialize">
+              <a title="VimeoDataObject" href="../classes/VimeoDataObject/safelyUnserialize.xhtml">safelyUnserialize()</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span/>
+    </footer>
+  </body>
+</html>
