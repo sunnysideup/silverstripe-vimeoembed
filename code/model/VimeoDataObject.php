@@ -185,7 +185,7 @@ class VimeoDataObject extends DataObject {
 			$this->dataAsArray = $this->safelyUnserialize($this->Data);
 		}
 		if(!empty($this->dataAsArray["thumbnail_url"])) {
-			$imageLink = str_repeat("_295x166", "", $this->dataAsArray["thumbnail_url"]);
+			$imageLink = str_replace("_295x166", "", $this->dataAsArray["thumbnail_url"]);
 			$v = "<img src=\"".$imageLink."\" alt=\"".Convert::raw2att($this->Title)."\"/>";
 		}
 		else {
@@ -201,7 +201,7 @@ class VimeoDataObject extends DataObject {
 	function getFullImageLink(){
 		$this->getDataAsArray();
 		if(!empty($this->dataAsArray["thumbnail_url"])) {
-			$imageLink = str_repeat("_295x166", "", $this->dataAsArray["thumbnail_url"]);
+			$imageLink = str_replace("_295x166", "", $this->dataAsArray["thumbnail_url"]);
 			return DBField::create_field("Varchar", $imageLink);
 		}
 		return null;
