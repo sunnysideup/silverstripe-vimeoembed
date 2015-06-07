@@ -173,6 +173,39 @@ class VimeoDataObject extends DataObject {
 	}
 
 	/**
+	 * return icon as <img tag>
+	 * @return String
+	 */
+	function getFullImage(){
+		if(!count($this->dataAsArray)) {
+			//remove non-ascii characters as they were causing havoc...
+			$this->Data = preg_replace('/[^(\x20-\x7F)]*/','', $this->Data);
+			$this->dataAsArray = $this->safelyUnserialize($this->Data);
+		}
+		if(!empty($this->dataAsArray["thumbnail_url"])) {
+			$imageLink = str_repeat("_295x166", "", $this->dataAsArray["thumbnail_url"]);
+			$v = "<img src=\"".$imageLink."\" alt=\"".Convert::raw2att($this->Title)."\"/>";
+		}
+		else {
+			$v = "[".$this->Title."]";
+		}
+		return DBField::create_field("HTMLText", $v);
+	}
+
+	/**
+	 * returns icon as myimage.png
+	 * @return String
+	 */
+	function getFullImageLink(){
+		$this->getDataAsArray();
+		if(!empty($this->dataAsArray["thumbnail_url"])) {
+			$imageLink = str_repeat("_295x166", "", $this->dataAsArray["thumbnail_url"]);
+			return DBField::create_field("Varchar", $imageLink);
+		}
+		return null;
+	}
+
+	/**
 	 * returns the HTML Embed code
 	 * @return String
 	 */
