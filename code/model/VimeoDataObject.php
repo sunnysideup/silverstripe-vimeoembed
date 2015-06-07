@@ -18,8 +18,8 @@ class VimeoDataObject extends DataObject {
 	private static $casting = array(
 		"FullName" => "Text",
 		"Icon" => "HTMLText",
-		"IconLink" => "Varchar"
-		"FullImage" => "HTMLText"
+		"IconLink" => "Varchar",
+		"FullImage" => "HTMLText",
 		"FullImageLink" => "Varchar"
 	);
 
