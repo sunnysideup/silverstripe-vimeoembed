@@ -19,6 +19,8 @@ class VimeoDataObject extends DataObject {
 		"FullName" => "Text",
 		"Icon" => "HTMLText",
 		"IconLink" => "Varchar"
+		"FullImage" => "HTMLText"
+		"FullImageLink" => "Varchar"
 	);
 
 	private static $searchable_fields = array(
