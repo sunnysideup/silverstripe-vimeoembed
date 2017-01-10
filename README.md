@@ -1,53 +1,72 @@
-Vimeo
-================================================================================
+# Silverstripe vimeoembed module
+[![Build Status](https://travis-ci.org/sunnysideup/silverstripe-vimeoembed.svg?branch=master)](https://travis-ci.org/sunnysideup/silverstripe-vimeoembed)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-vimeoembed/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-vimeoembed/?branch=master)
+[![codecov.io](https://codecov.io/github/sunnysideup/silverstripe-vimeoembed/coverage.svg?branch=master)](https://codecov.io/github/sunnysideup/silverstripe-vimeoembed?branch=master)
+![helpfulrobot](https://helpfulrobot.io/sunnysideup/vimeoembed/badge)
 
-Add vimeo vidoes to your Silverstripe website.
-
-
-Developer
------------------------------------------------
-Nicolaas Francken [at] sunnysideup.co.nz
-
-
-Requirements
------------------------------------------------
-* see composer.json
-* CURL
+[![Latest Stable Version](https://poser.pugx.org/sunnysideup/vimeoembed/version)](https://packagist.org/packages/sunnysideup/vimeoembed)
+[![License](https://poser.pugx.org/sunnysideup/vimeoembed/license)](https://packagist.org/packages/sunnysideup/vimeoembed)
+[![Monthly Downloads](https://poser.pugx.org/sunnysideup/vimeoembed/d/monthly)](https://packagist.org/packages/sunnysideup/vimeoembed)
 
 
-Documentation
------------------------------------------------
-Please contact author for more details.
-
-Any bug reports and/or feature requests will be
-looked at.
-
-We are also very happy to provide personalised support
-for this module in exchange for a small donation.
+## Documentation
 
 
-Installation Instructions
------------------------------------------------
- * Find out how to add modules to SS and add module as per usual.
- * Review configs and add entries to `mysite/_config/config.yml`
-(or similar) as necessary.
-In the `_config` folder of this module
-you can usually find some examples of config options (if any).
 
-CONFIG OPTIONS
------------------------------------------------
+ * [Developer Docs](docs/en/INDEX.md)
+ * [User Guide](docs/en/userguide.md)
+ * [API](http://ssmods.com/apis/vimeoembed/docs/en/api/)
 
-* width (optional) The exact width of the video. Defaults to original size.
-* maxwidth (optional) Same as width, but video will not exceed original size.
-* height (optional) The exact height of the video. Defaults to original size.
-* maxheight (optional) Same as height, but video will not exceed original size.
-* byline (optional) Show the byline on the video. Defaults to true.
-* title (optional) Show the title on the video. Defaults to true.
-* portrait (optional) Show the user's portrait on the video. Defaults to true.
-* color (optional) Specify the color of the video controls.
-* callback (optional) When returning JSON, wrap in this function.
-* autoplay (optional) Automatically start playback of the video. Defaults to false.
-* xhtml (optional) Make the embed code XHTML compliant. Defaults to true.
-* api (optional) Enable the Javascript API for Moogaloop. Defaults to false.
-* wmode (optional) Add the "wmode" parameter. Can be either transparent or opaque.
-* iframe (optional) Use our new embed code. Defaults to true. NEW!
+## Requirements
+
+
+
+see [composer.json](composer.json) for details
+
+### Suggested Modules
+
+
+
+see [composer.json](composer.json) for details
+
+
+## Installation
+
+
+```
+composer require sunnysideup/vimeoembed
+```
+
+### Configuration
+
+
+
+In the `_config` folder you will find the `vimeoembed.yml.example`
+file that shows options for the configuration of this module.
+
+We recommend that you:
+
+  1. copy these `vimeoembed.yml.example` files into your
+`mysite/_config` folder
+  2. remove the .example extension
+  3. delete the lines you not care about, and
+  4. adjust the configurations that you would like to use.
+
+
+## Contributing
+
+
+
+We welcome any contributions. See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+
+## Paid assistance
+
+
+
+You can pay us to create an improved / adapted version of this module for your own projects.  Please contact us if you like to find out more: [www.sunnysideup.co.nz](http://www.sunnysideup.co.nz)
+
+## Author
+
+
+
+Sunny Side Up Ltd.
