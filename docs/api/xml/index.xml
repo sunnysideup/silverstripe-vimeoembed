@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<index xmlns="http://xml.phpdox.net/src" basedir="/var/www/_modules/vimeoembed/trunk">
-  <namespace name="">
-    <class name="VimeoDataObject" src="code/model/VimeoDataObject.php" description="author nicolaas[at]sunnysideup.co.nz" xml="classes/VimeoDataObject.xml"/>
-    <class name="VimeoDOD" src="code/model/VimeoDOD.php" xml="classes/VimeoDOD.xml"/>
-    <class name="VimeoDataObjectRedoTask" src="code/tasks/VimeoDataObjectRedoTask.php" xml="classes/VimeoDataObjectRedoTask.xml"/>
-    <class name="VimeoDataObjectAdmin" src="code/cms/VimeoDataObjectAdmin.php" xml="classes/VimeoDataObjectAdmin.xml"/>
-  </namespace>
-</index>
