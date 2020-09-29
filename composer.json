@@ -1,6 +1,6 @@
 {
     "name": "sunnysideup/vimeoembed",
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "description": "allows you to embed vimeo videos into your silverstripe website",
     "keywords": [
         "Silverstripe-CMS",
