@@ -2,9 +2,13 @@
 
 namespace Sunnysideup\Vimeoembed\Tasks;
 
-use BuildTask;
-use VimeoDataObject;
-use DB;
+
+
+
+use Sunnysideup\Vimeoembed\Model\VimeoDataObject;
+use SilverStripe\ORM\DB;
+use SilverStripe\Dev\BuildTask;
+
 
 
 class VimeoDataObjectRedoTask extends BuildTask

@@ -2,12 +2,20 @@
 
 namespace Sunnysideup\Vimeoembed\Model;
 
-use DataExtension;
-use FieldList;
-use DropdownField;
-use LiteralField;
-use Config;
+
+
+
+
+
 use Page;
+use Sunnysideup\Vimeoembed\Model\VimeoDataObject;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\Vimeoembed\Model\VimeoDOD;
+use SilverStripe\ORM\DataExtension;
+
 
 
 
@@ -22,7 +30,7 @@ use Page;
 class VimeoDOD extends DataExtension
 {
     private static $has_one = array(
-        "VimeoDataObject" => "VimeoDataObject"
+        "VimeoDataObject" => VimeoDataObject::class
     );
 
     private static $exclude_vimeo_from_page_classes = [];
@@ -49,11 +57,11 @@ class VimeoDOD extends DataExtension
         $hasVimeo = true;
         $includeClasses = $this->owner->Config()->get("include_vimeo_in_page_classes");
         if (count($includeClasses)) {
-            if (!in_array($this->owner->ClassName, Config::inst()->get("VimeoDOD", "include_vimeo_in_page_classes"))) {
+            if (!in_array($this->owner->ClassName, Config::inst()->get(VimeoDOD::class, "include_vimeo_in_page_classes"))) {
                 $hasVimeo = false;
             }
         }
-        $excludeClasses = Config::inst()->get("VimeoDOD", "exclude_vimeo_from_page_classes");
+        $excludeClasses = Config::inst()->get(VimeoDOD::class, "exclude_vimeo_from_page_classes");
         if (count($excludeClasses)) {
             if (in_array($this->owner->ClassName, $excludeClasses)) {
                 $hasVimeo = false;
