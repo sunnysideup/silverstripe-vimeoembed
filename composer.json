@@ -1,6 +1,6 @@
 {
     "name": "sunnysideup/vimeoembed",
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "description": "allows you to embed vimeo videos into your silverstripe website",
     "keywords": [
         "Silverstripe-CMS",
@@ -18,10 +18,12 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "~3.6",
-        "silverstripe/cms": "~3.6"
+        "silverstripe/recipe-cms": "^4.4"
     },
-    "extra": {
-        "installer-name": "vimeoembed"
+    "extra": [],
+    "autoload": {
+        "psr-4": {
+            "Sunnysideup\\Vimeoembed\\": "src/"
+        }
     }
 }
