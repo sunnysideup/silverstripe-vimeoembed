@@ -1,14 +1,23 @@
 <?php
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD:  extends DataExtension (ignore case)
+  * NEW:  extends DataExtension (COMPLEX)
+  * EXP: Check for use of $this->anyVar and replace with $this->anyVar[$this->owner->ID] or consider turning the class into a trait
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
 class VimeoDOD extends DataExtension
 {
     private static $has_one = array(
         "VimeoDataObject" => "VimeoDataObject"
     );
 
-    private static $exclude_vimeo_from_page_classes = array();
+    private static $exclude_vimeo_from_page_classes = [];
 
-    private static $include_vimeo_in_page_classes = array();
+    private static $include_vimeo_in_page_classes = [];
 
     public function updateCMSFields(FieldList $fields)
     {

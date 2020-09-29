@@ -107,7 +107,7 @@ class VimeoDataObject extends DataObject
         $this->getDataAsArray();
         if (is_array($this->dataAsArray) && count($this->dataAsArray)) {
             foreach ($this->dataAsArray as $name => $value) {
-                $fields->addFieldToTab("Root.Details", new ReadOnlyField($name, $name, $value));
+                $fields->addFieldToTab("Root.Details", new ReadonlyField($name, $name, $value));
             }
         }
         return $fields;
@@ -254,7 +254,7 @@ class VimeoDataObject extends DataObject
         if ($this->doNotRetrieveData) {
             //do nothing
         } elseif ($this->VimeoCode) {
-            $get = array();
+            $get = [];
             if ($width = $this->Config()->get("width")) {
                 $get["width"] = $width;
             }
@@ -352,9 +352,9 @@ class VimeoDataObject extends DataObject
         if (!$xml_values) {
             return array();
         }
-        $xml_array = array();
+        $xml_array = [];
         $last_tag_ar =& $xml_array;
-        $parents = array();
+        $parents = [];
         $last_counter_in_tag = array(1=>0);
         foreach ($xml_values as $data) {
             switch ($data['type']) {
