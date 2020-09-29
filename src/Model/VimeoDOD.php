@@ -1,5 +1,15 @@
 <?php
 
+namespace Sunnysideup\Vimeoembed\Model;
+
+use DataExtension;
+use FieldList;
+use DropdownField;
+use LiteralField;
+use Config;
+use Page;
+
+
 
 /**
   * ### @@@@ START REPLACEMENT @@@@ ###

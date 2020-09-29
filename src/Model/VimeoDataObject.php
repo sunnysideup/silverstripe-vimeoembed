@@ -1,5 +1,15 @@
 <?php
 
+namespace Sunnysideup\Vimeoembed\Model;
+
+use DataObject;
+use LiteralField;
+use ReadonlyField;
+use DBField;
+use Convert;
+use Exception;
+
+
 /**
  *@author nicolaas[at]sunnysideup.co.nz
  *

@@ -1,5 +1,10 @@
 <?php
 
+namespace Sunnysideup\Vimeoembed\Cms;
+
+use ModelAdmin;
+
+
 /**
  * @author: Nicolaas [at] sunnysideup.co.nz
  * @description: manage cards

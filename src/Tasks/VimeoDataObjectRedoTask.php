@@ -1,5 +1,12 @@
 <?php
 
+namespace Sunnysideup\Vimeoembed\Tasks;
+
+use BuildTask;
+use VimeoDataObject;
+use DB;
+
+
 class VimeoDataObjectRedoTask extends BuildTask
 {
     protected $title = "Redo meta-data for Vimeo Objects";
