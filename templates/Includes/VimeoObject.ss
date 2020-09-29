@@ -1,4 +1,4 @@
-<% if VimeoDataObject %>
+<% if $VimeoDataObject %>
 <div class="vimeoObject">
 	$VimeoDataObject.HTML
 </div>
