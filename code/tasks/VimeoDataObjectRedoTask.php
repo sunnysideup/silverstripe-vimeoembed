@@ -19,3 +19,4 @@ class VimeoDataObjectRedoTask extends BuildTask
         DB::alteration_message("================ COMPLETED ====================");
     }
 }
+

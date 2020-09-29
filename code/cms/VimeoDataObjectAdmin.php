@@ -13,3 +13,4 @@ class VimeoDataObjectAdmin extends ModelAdmin
 
     private static $menu_title = "Vimeos";
 }
+

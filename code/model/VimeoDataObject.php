@@ -457,3 +457,4 @@ class VimeoDataObject extends DataObject
         return base64_encode(serialize($dataAsArray));
     }
 }
+
