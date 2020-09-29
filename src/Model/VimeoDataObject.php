@@ -45,6 +45,8 @@ class VimeoDataObject extends DataObject
         'HTMLSnippet' => 'HTMLText',
         'Data' => 'Text',
     ];
+    
+    private static $table_name = 'VimeoEmbed';
 
     private static $casting = [
         'FullName' => 'Text',
