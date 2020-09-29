@@ -1,0 +1,6 @@
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    VimeoDataObjectRedoTask: Sunnysideup\Vimeoembed\Tasks\VimeoDataObjectRedoTask
+    VimeoDataObject: Sunnysideup\Vimeoembed\Model\VimeoDataObject
+    VimeoDOD: Sunnysideup\Vimeoembed\Model\VimeoDOD
+    VimeoDataObjectAdmin: Sunnysideup\Vimeoembed\Cms\VimeoDataObjectAdmin
