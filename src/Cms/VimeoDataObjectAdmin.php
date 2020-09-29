@@ -2,11 +2,8 @@
 
 namespace Sunnysideup\Vimeoembed\Cms;
 
-
-use Sunnysideup\Vimeoembed\Model\VimeoDataObject;
 use SilverStripe\Admin\ModelAdmin;
-
-
+use Sunnysideup\Vimeoembed\Model\VimeoDataObject;
 
 /**
  * @author: Nicolaas [at] sunnysideup.co.nz
@@ -15,10 +12,9 @@ use SilverStripe\Admin\ModelAdmin;
 
 class VimeoDataObjectAdmin extends ModelAdmin
 {
-    private static $managed_models = array(VimeoDataObject::class);
+    private static $managed_models = [VimeoDataObject::class];
 
-    private static $url_segment = "vimeos";
+    private static $url_segment = 'vimeos';
 
-    private static $menu_title = "Vimeos";
+    private static $menu_title = 'Vimeos';
 }
-

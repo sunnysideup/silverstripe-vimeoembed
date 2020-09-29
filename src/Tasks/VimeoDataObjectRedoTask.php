@@ -2,20 +2,15 @@
 
 namespace Sunnysideup\Vimeoembed\Tasks;
 
-
-
-
-use Sunnysideup\Vimeoembed\Model\VimeoDataObject;
-use SilverStripe\ORM\DB;
 use SilverStripe\Dev\BuildTask;
-
-
+use SilverStripe\ORM\DB;
+use Sunnysideup\Vimeoembed\Model\VimeoDataObject;
 
 class VimeoDataObjectRedoTask extends BuildTask
 {
-    protected $title = "Redo meta-data for Vimeo Objects";
+    protected $title = 'Redo meta-data for Vimeo Objects';
 
-    protected $description = "Removes all the cached meta-data for all vimeo objects and re-applies them. Should end with the word Completed.";
+    protected $description = 'Removes all the cached meta-data for all vimeo objects and re-applies them. Should end with the word Completed.';
 
     public function run($request)
     {
@@ -23,11 +18,10 @@ class VimeoDataObjectRedoTask extends BuildTask
         for ($i = 0; $i < $count; $i++) {
             $obj = VimeoDataObject::get()->limit(1, $i)->First();
             if ($obj) {
-                DB::alteration_message("Saving data for object with code ".$obj->VimeoCode, "created");
+                DB::alteration_message('Saving data for object with code ' . $obj->VimeoCode, 'created');
                 $obj->HTML(true);
             }
         }
-        DB::alteration_message("================ COMPLETED ====================");
+        DB::alteration_message('================ COMPLETED ====================');
     }
 }
-

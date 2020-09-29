@@ -1,0 +1,80 @@
+
+
+---------------------------------
+  Running Easy Conding Standards
+---------------------------------
+  directory of script: /home/ssu/.config/composer/vendor/bin
+  directory to analyse: /var/www/ss3/upgrades/vimeoembed/vimeoembed/src
+  also check (e.g. _config.php file): /var/www/ss3/upgrades/vimeoembed/app/_config.php
+  ecs config file: /home/ssu/.config/composer/vendor/bin/../sunnysideup/easy-coding-standards/ecs.yml
+---------------------------------
+
+
+EasyCodingStandard v6.1.0
+Config file: /home/ssu/.config/composer/vendor/sunnysideup/easy-coding-standards/ecs.yml
+ 0/1 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%
+ 1/1 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+
+ [OK] No errors found. Great job - your code is shiny in style!                                                         
+
+EasyCodingStandard v6.1.0
+Config file: /home/ssu/.config/composer/vendor/sunnysideup/easy-coding-standards/ecs.yml
+ 0/4 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%
+ 3/4 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░]  75%
+ 4/4 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ vimeoembed/src/Model/VimeoDataObject.php:424
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Unused variable $last_count.
+ (SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff.UnusedVariable)
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ [ERROR] Found 1 error that need to be fixed manually.                                                                  
+
+
+
+---------------------------------
+  Running PHP STAN
+---------------------------------
+  directory of script: /home/ssu/.config/composer/vendor/bin
+  directory to analyse: /var/www/ss3/upgrades/vimeoembed/vimeoembed/src
+  also check (e.g. _config.php file): /var/www/ss3/upgrades/vimeoembed/app/_config.php
+  level: 4 (1/6)
+  php stan config file: /home/ssu/.config/composer/vendor/bin/../sunnysideup/easy-coding-standards/phpstan.neon
+---------------------------------
+
+
+ 0/1 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%[2K 1/1 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+
+ [OK] No errors                                                                                                         
+
+ 0/4 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%[2K 2/4 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░]  50%[2K 3/4 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░]  75%[2K 4/4 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+
+ ------ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+  Line   Model/VimeoDataObject.php                                                                                                                                                      
+ ------ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+  139    Return typehint of method Sunnysideup\Vimeoembed\Model\VimeoDataObject::MetaDataVariable() has invalid type Sunnysideup\Vimeoembed\Model\Varchar.                              
+  149    Return typehint of method Sunnysideup\Vimeoembed\Model\VimeoDataObject::getMetaDataVariable() has invalid type Sunnysideup\Vimeoembed\Model\Varchar.                           
+  153    Method Sunnysideup\Vimeoembed\Model\VimeoDataObject::getMetaDataVariable() should return Sunnysideup\Vimeoembed\Model\Varchar but returns SilverStripe\ORM\FieldType\DBField.  
+  155    Method Sunnysideup\Vimeoembed\Model\VimeoDataObject::getMetaDataVariable() should return Sunnysideup\Vimeoembed\Model\Varchar but returns null.                                
+  187    Method Sunnysideup\Vimeoembed\Model\VimeoDataObject::getIconLink() should return string but returns null.                                                                      
+  221    Method Sunnysideup\Vimeoembed\Model\VimeoDataObject::getFullImageLink() should return string but returns null.                                                                 
+  267    Method Sunnysideup\Vimeoembed\Model\VimeoDataObject::safelyUnserialize() should return array but returns string|null.                                                          
+  386    Negated boolean expression is always false.                                                                                                                                    
+ ------ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+
+ ------ ----------------------------------- 
+  Line   Tasks/VimeoDataObjectRedoTask.php  
+ ------ ----------------------------------- 
+  20     If condition is always true.       
+ ------ ----------------------------------- 
+
+ ------------------------------------------------------------------------------------------------- 
+  Error                                                                                            
+ ------------------------------------------------------------------------------------------------- 
+  Ignored error pattern #on an unknown class [a-zA-Z0-9\\_]+# was not matched in reported errors.  
+  Ignored error pattern #with incorrect case:# was not matched in reported errors.                 
+ ------------------------------------------------------------------------------------------------- 
+
+ [ERROR] Found 11 errors                                                                                                
+
