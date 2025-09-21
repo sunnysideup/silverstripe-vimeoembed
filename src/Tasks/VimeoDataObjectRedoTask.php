@@ -14,13 +14,10 @@ class VimeoDataObjectRedoTask extends BuildTask
 
     public function run($request)
     {
-        $count = VimeoDataObject::get()->count() + 1;
-        for ($i = 0; $i < $count; $i++) {
-            $obj = VimeoDataObject::get()->limit(1, $i)->First();
-            if ($obj) {
-                DB::alteration_message('Saving data for object with code ' . $obj->VimeoCode, 'created');
-                $obj->HTML(true);
-            }
+        $objects = VimeoDataObject::get();
+        foreach ($objects as $obj) {
+            DB::alteration_message('Saving data for object with code ' . $obj->VimeoCode, 'created');
+            $obj->HTML(true);
         }
         DB::alteration_message('================ COMPLETED ====================');
     }

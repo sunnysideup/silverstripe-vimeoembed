@@ -12,7 +12,9 @@ use Sunnysideup\Vimeoembed\Model\VimeoDataObject;
 
 class VimeoDataObjectAdmin extends ModelAdmin
 {
-    private static $managed_models = [VimeoDataObject::class];
+    private static $managed_models = [
+        VimeoDataObject::class
+    ];
 
     private static $url_segment = 'vimeos';
 
