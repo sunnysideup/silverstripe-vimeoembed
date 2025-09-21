@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sunnysideup\Vimeoembed\Model;
 
 use Exception;
@@ -8,6 +10,8 @@ use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\ORM\FieldType\DBHTMLText;
+use SilverStripe\ORM\FieldType\DBVarchar;
 
 /**
  *@author nicolaas[at]sunnysideup.co.nz
@@ -17,9 +21,9 @@ use SilverStripe\ORM\FieldType\DBField;
 
 class VimeoDataObject extends DataObject
 {
-    protected $dataAsArray = [];
+    protected array $dataAsArray = [];
 
-    protected $variables = [
+    protected array $variables = [
         'type',
         'version',
         'provider_name',
@@ -45,7 +49,7 @@ class VimeoDataObject extends DataObject
         'HTMLSnippet' => 'HTMLText',
         'Data' => 'Text',
     ];
-    
+
     private static $table_name = 'VimeoEmbed';
 
     private static $casting = [
@@ -66,35 +70,35 @@ class VimeoDataObject extends DataObject
         'Title' => 'Title',
     ];
 
-    private static $singular_name = 'Vimeo Video';
+    private static string $singular_name = 'Vimeo Video';
 
-    private static $plural_name = 'Vimeo Videos';
+    private static string $plural_name = 'Vimeo Videos';
 
-    private static $default_sort = 'Title ASC';
+    private static string $default_sort = 'Title ASC';
 
-    private static $vimeo_base_url = 'http://vimeo.com/api/oembed.xml?url=http%3A//vimeo.com/'; //The exact width of the video. Defaults to original size.
+    private static string $vimeo_base_url = 'http://vimeo.com/api/oembed.xml?url=http%3A//vimeo.com/'; //The exact width of the video. Defaults to original size.
 
-    private static $width = null; //The exact width of the video. Defaults to original size.
+    private static int $width = null; //The exact width of the video. Defaults to original size.
 
-    private static $maxwidth = null; ////Same as width, but video will not exceed original size.
+    private static int $maxwidth = null; ////Same as width, but video will not exceed original size.
 
-    private static $height = null; //The exact height of the video. Defaults to original size.
+    private static int $height = null; //The exact height of the video. Defaults to original size.
 
-    private static $maxheight = null; //Same as height, but video will not exceed original size.
+    private static int $maxheight = null; //Same as height, but video will not exceed original size.
 
     private static $byline = null; //Show the byline on the video. Defaults to true.
 
     private static $title = null; //Show the title on the video. Defaults to true.
 
-    private static $portrait = null; //// Show the user's portrait on the video. Defaults to true.
+    private static ?bool $portrait = null; //// Show the user's portrait on the video. Defaults to true.
 
-    private static $color = null; // Specify the color of the video controls.
+    private static ?string $color = null; // Specify the color of the video controls.
 
-    private static $callback = null; //When returning JSON, wrap in this function.
+    private static  $callback = null; //When returning JSON, wrap in this function.
 
-    private static $autoplay = null; //Automatically start playback of the video. Defaults to false.
+    private static ?bool $autoplay = null; //Automatically start playback of the video. Defaults to false.
 
-    private static $xhtml = null; // Make the embed code XHTML compliant. Defaults to true.
+    private static ?bool $xhtml = null; // Make the embed code XHTML compliant. Defaults to true.
 
     private static $api = null; // Enable the Javascript API for Moogaloop. Defaults to false.
 
@@ -107,7 +111,7 @@ class VimeoDataObject extends DataObject
      * for internal use only
      * @var boolean
      */
-    private $doNotRetrieveData = false;
+    private bool $doNotRetrieveData = false;
 
     public function getCMSFields()
     {
@@ -128,7 +132,7 @@ class VimeoDataObject extends DataObject
      * casted variable
      * @return string
      */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->Title . ' (' . $this->VimeoCode . ')';
     }
@@ -136,9 +140,9 @@ class VimeoDataObject extends DataObject
     /**
      * alias for getVariable
      * @param string $name
-     * @return Varchar
+     * @return DBVarchar|null
      */
-    public function MetaDataVariable($name)
+    public function MetaDataVariable($name): ?DBVarchar
     {
         return $this->getMetaDataVariable($name);
     }
@@ -146,13 +150,13 @@ class VimeoDataObject extends DataObject
     /**
      * @param string $name - name of variable
      *
-     * @return Varchar Object
+     * @return DBVarchar Object
      */
-    public function getMetaDataVariable($name)
+    public function getMetaDataVariable($name): DBVarchar|null
     {
         $this->getDataAsArray();
         if (! empty($this->dataAsArray[$name])) {
-            return DBField::create_field('Varchar', $this->dataAsArray[$name]);
+            return DBVarchar::create_field('Varchar', $this->dataAsArray[$name]);
         }
         return null;
     }
@@ -161,7 +165,7 @@ class VimeoDataObject extends DataObject
      * return icon as <img tag>
      * @return string
      */
-    public function getIcon()
+    public function getIcon(): DBHTMLText
     {
         if (! count($this->dataAsArray)) {
             //remove non-ascii characters as they were causing havoc...
@@ -173,18 +177,18 @@ class VimeoDataObject extends DataObject
         } else {
             $v = '[' . $this->Title . ']';
         }
-        return DBField::create_field('HTMLText', $v);
+        return DBHTMLText::create_field('HTMLText', $v);
     }
 
     /**
      * returns icon as myimage.png
      * @return string
      */
-    public function getIconLink()
+    public function getIconLink(): DBVarchar|null
     {
         $this->getDataAsArray();
         if (! empty($this->dataAsArray['thumbnail_url'])) {
-            return DBField::create_field('Varchar', $this->dataAsArray['thumbnail_url']);
+            return DBVarchar::create_field('Varchar', $this->dataAsArray['thumbnail_url']);
         }
         return null;
     }
@@ -193,7 +197,7 @@ class VimeoDataObject extends DataObject
      * return icon as <img tag>
      * @return string
      */
-    public function getFullImage()
+    public function getFullImage(): DBHTMLText
     {
         if (! count($this->dataAsArray)) {
             //remove non-ascii characters as they were causing havoc...
@@ -206,19 +210,19 @@ class VimeoDataObject extends DataObject
         } else {
             $v = '[' . $this->Title . ']';
         }
-        return DBField::create_field('HTMLText', $v);
+        return DBHTMLText::create_field('HTMLText', $v);
     }
 
     /**
      * returns icon as myimage.png
      * @return string
      */
-    public function getFullImageLink()
+    public function getFullImageLink(): DBVarchar|null
     {
         $this->getDataAsArray();
         if (! empty($this->dataAsArray['thumbnail_url'])) {
             $imageLink = str_replace('_295x166', '', $this->dataAsArray['thumbnail_url']);
-            return DBField::create_field('Varchar', $imageLink);
+            return DBVarchar::create_field('Varchar', $imageLink);
         }
         return null;
     }
@@ -227,7 +231,7 @@ class VimeoDataObject extends DataObject
      * returns the HTML Embed code
      * @return string
      */
-    public function HTML($noCaching = false)
+    public function HTML($noCaching = false): ?string
     {
         if ($noCaching || strlen($this->HTMLSnippet) < 17 || ! $this->Data || isset($_GET['flush'])) {
             $this->updateData();
@@ -245,28 +249,28 @@ class VimeoDataObject extends DataObject
     /**
      * @param string $serializedData
      *
-     * @return array
+     * @return mixed
      */
-    public function safelyUnserialize($serializedData)
+    public function safelyUnserialize(string $serializedData): mixed
     {
         return unserialize(base64_decode($serializedData, true));
-        //this code needs checking.
-        try {
-            $fixed = unserialize(base64_decode($serializedData, true));
-            if (is_array($fixed)) {
-                return $fixed;
-            }
-            return unserialize($serializedData);
-        } catch (Exception $e) {
-            $fixed = preg_replace_callback(
-                '!s:(\d+):"(.*?)";!',
-                function ($match) {
-                    return $match[1] === strlen($match[2]) ? $match[0] : 's:' . strlen($match[2]) . ':"' . $match[2] . '";';
-                },
-                $serializedData
-            );
-        }
-        return $fixed;
+        // //this code needs checking.
+        // try {
+        //     $fixed = unserialize(base64_decode($serializedData, true));
+        //     if (is_array($fixed)) {
+        //         return $fixed;
+        //     }
+        //     return unserialize($serializedData);
+        // } catch (Exception $e) {
+        //     $fixed = preg_replace_callback(
+        //         '!s:(\d+):"(.*?)";!',
+        //         function ($match) {
+        //             return $match[1] === strlen($match[2]) ? $match[0] : 's:' . strlen($match[2]) . ':"' . $match[2] . '";';
+        //         },
+        //         $serializedData
+        //     );
+        // }
+        // return $fixed;
     }
 
     /**
@@ -274,7 +278,7 @@ class VimeoDataObject extends DataObject
      *
      * @return string
      */
-    public function safelySerialize($dataAsArray)
+    public function safelySerialize(mixed $dataAsArray): string
     {
         return base64_encode(serialize($dataAsArray));
     }
@@ -285,7 +289,7 @@ class VimeoDataObject extends DataObject
      * then return it.
      * @return array
      */
-    protected function getDataAsArray()
+    protected function getDataAsArray(): array
     {
         if ($this->dataAsArray) {
             return $this->dataAsArray;
@@ -302,7 +306,7 @@ class VimeoDataObject extends DataObject
      *
      * @return array
      */
-    protected function updateData($writeToDatabase = true)
+    protected function updateData(?bool $writeToDatabase = true): string
     {
         if ($this->doNotRetrieveData) {
             //do nothing
@@ -382,7 +386,7 @@ class VimeoDataObject extends DataObject
     }
 
     //SOURCE: http://php.net/manual/en/function.xml-parse.php
-    private function my_xml2array($contents)
+    private function my_xml2array($contents): array|false
     {
         $parser = xml_parser_create('');
         if (! $parser) {
@@ -397,7 +401,7 @@ class VimeoDataObject extends DataObject
             return [];
         }
         $xml_array = [];
-        $last_tag_ar = & $xml_array;
+        $last_tag_ar = &$xml_array;
         $parents = [];
         $last_counter_in_tag = [1 => 0];
         foreach ($xml_values as $data) {
@@ -412,8 +416,8 @@ class VimeoDataObject extends DataObject
                         $new_tag['value'] = trim($data['value']);
                     }
                     $last_tag_ar[$last_counter_in_tag[$data['level']]] = $new_tag;
-                    $parents[$data['level']] = & $last_tag_ar;
-                    $last_tag_ar = & $last_tag_ar[$last_counter_in_tag[$data['level']]++];
+                    $parents[$data['level']] = &$last_tag_ar;
+                    $last_tag_ar = &$last_tag_ar[$last_counter_in_tag[$data['level']]++];
                     break;
                 case 'complete':
                     $new_tag = ['name' => $data['tag']];
@@ -427,7 +431,7 @@ class VimeoDataObject extends DataObject
                     $last_tag_ar[$last_counter_in_tag[$data['level']]++] = $new_tag;
                     break;
                 case 'close':
-                    $last_tag_ar = & $parents[$data['level']];
+                    $last_tag_ar = &$parents[$data['level']];
                     break;
                 default:
                     break;
@@ -439,9 +443,9 @@ class VimeoDataObject extends DataObject
     // use this to get node of tree by path with '/' terminator
     //
     //SOURCE: http://php.net/manual/en/function.xml-parse.php
-    private function get_value_by_path($__xml_tree, $__tag_path)
+    private function get_value_by_path($__xml_tree, $__tag_path): array|false
     {
-        $tmp_arr = & $__xml_tree;
+        $tmp_arr = &$__xml_tree;
         $tag_path = explode('/', $__tag_path);
         foreach ($tag_path as $tag_name) {
             $res = false;

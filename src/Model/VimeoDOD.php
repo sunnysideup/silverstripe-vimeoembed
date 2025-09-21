@@ -4,28 +4,22 @@ namespace Sunnysideup\Vimeoembed\Model;
 
 use Page;
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Core\Extension;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\DataExtension;
+use SilverStripe\ORM\DataList;
 
-/**
- * ### @@@@ START REPLACEMENT @@@@ ###
- * WHY: automated upgrade
- * OLD:  extends DataExtension (ignore case)
- * NEW:  extends DataExtension (COMPLEX)
- * EXP: Check for use of $this->anyVar and replace with $this->anyVar[$this->owner->ID] or consider turning the class into a trait
- * ### @@@@ STOP REPLACEMENT @@@@ ###
- */
-class VimeoDOD extends DataExtension
+class VimeoDOD extends Extension
 {
     private static $has_one = [
         'VimeoDataObject' => VimeoDataObject::class,
     ];
 
-    private static $exclude_vimeo_from_page_classes = [];
+    private static array $exclude_vimeo_from_page_classes = [];
 
-    private static $include_vimeo_in_page_classes = [];
+    private static array $include_vimeo_in_page_classes = [];
 
     public function updateCMSFields(FieldList $fields)
     {
@@ -42,28 +36,30 @@ class VimeoDOD extends DataExtension
         return $fields;
     }
 
-    public function HasVimeo()
+    public function HasVimeo(): bool
     {
+        $owner = $this->getOwner();
         $hasVimeo = true;
-        $includeClasses = $this->owner->Config()->get('include_vimeo_in_page_classes');
+        $includeClasses = $owner->Config()->get('include_vimeo_in_page_classes');
         if (count($includeClasses)) {
-            if (! in_array($this->owner->ClassName, Config::inst()->get(VimeoDOD::class, 'include_vimeo_in_page_classes'), true)) {
+            if (! in_array($owner->ClassName, Config::inst()->get(VimeoDOD::class, 'include_vimeo_in_page_classes'), true)) {
                 $hasVimeo = false;
             }
         }
         $excludeClasses = Config::inst()->get(VimeoDOD::class, 'exclude_vimeo_from_page_classes');
         if (count($excludeClasses)) {
-            if (in_array($this->owner->ClassName, $excludeClasses, true)) {
+            if (in_array($owner->ClassName, $excludeClasses, true)) {
                 $hasVimeo = false;
             }
         }
         return $hasVimeo;
     }
 
-    public function VimeosInThisSection()
+    public function VimeosInThisSection(?string $className = Page::class): DataList
     {
-        return Page::get()->filter([
-            'ParentID' => [intval($this->owner->ParentID), intval($this->owner->ID)],
+        $owner = $this->getOwner();
+        return $className::get()->filter([
+            'ParentID' => [intval($owner->ParentID), intval($owner->ID)],
             'VimeoDataObjectID:GreaterThan' => 0,
             'ShowInSearch' => 1,
         ]);
