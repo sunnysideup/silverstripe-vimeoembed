@@ -10,6 +10,8 @@ use SilverStripe\Core\Convert;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\Forms\TextareaField;
+use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\ORM\FieldType\DBVarchar;
@@ -85,7 +87,9 @@ class VimeoDataObject extends DataObject
 
     private static array $db = [
         'Title' => 'Varchar(100)',
+        'VimeoCodeOriginal' => 'Varchar(255)',
         'VimeoCode' => 'Int',
+        'UseAdvancedOptions' => 'Boolean',
         'HTMLSnippet' => 'HTMLText',
         'Data' => 'Text', // base64(serialized array) for backward compat
     ];
@@ -102,6 +106,7 @@ class VimeoDataObject extends DataObject
 
     private static array $searchable_fields = [
         'Title' => 'PartialMatchFilter',
+        'VimeoCodeOriginal',
         'VimeoCode',
     ];
 
@@ -139,21 +144,51 @@ class VimeoDataObject extends DataObject
     public function getCMSFields(): FieldList
     {
         $fields = parent::getCMSFields();
-
         $fields->removeByName('HTMLSnippet');
         $fields->removeByName('Data');
-
         $fields->addFieldToTab(
             'Root.Main',
-            LiteralField::create('HTMLSnippet', (string) $this->HTML(false))
+            LiteralField::create('HTMLSnippetNice', (string) $this->HTML(false))
         );
-
-        foreach ($this->getDataAsArray() as $name => $value) {
+        if ($this->UseAdvancedOptions) {
             $fields->addFieldToTab(
-                'Root.Details',
-                ReadonlyField::create((string) $name, (string) $name, is_scalar($value) ? (string) $value : json_encode($value, JSON_UNESCAPED_SLASHES))
+                'Root.AdvancedOptions',
+                TextareaField::create('HTMLSnippet', 'HTML Snippet')->setRows(4)
+                    ->setDescription('
+                        You can paste your own embed code here if you do not want to use the automatic retrieval from Vimeo.
+                        Note that in this case, no thumbnail or other information will be retrieved automatically.
+                        This is usually in the format of something like this:
+                            <br />
+                            <br />
+                            &lt;iframe id=&quot;how-it-works-iframe&quot; width=&quot;439&quot; height=&quot;274&quot; src=&quot;https://player.vimeo.com/video/123456789?h=123&amp;amp;autoplay=1&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot; title=&quot;How It Works Video Player&quot; data-vimeo-tracked=&quot;true&quot; data-ready=&quot;true&quot;&gt;&lt;/iframe&gt;
+                    ')
+            );
+            $fields->removeByName('VimeoCode');
+            $fields->removeByName('VimeoCodeOriginal');
+        } else {
+
+            foreach ($this->getDataAsArray() as $name => $value) {
+                $fields->addFieldToTab(
+                    'Root.Details',
+                    ReadonlyField::create((string) $name, (string) $name, is_scalar($value) ? (string) $value : json_encode($value, JSON_UNESCAPED_SLASHES))
+                );
+            }
+
+            $fields->replaceField(
+                'VimeoCodeOriginal',
+                TextField::create('VimeoCodeOriginal', 'Vimeo Code')
+                    ->setDescription('
+                        The numeric code from the Vimeo URL, e.g. for https://vimeo.com/123456789 use 123456789.
+                            You can also enter the full URL and we will extract the code for you.
+                    ')
+            );
+            $fields->replaceField(
+                'VimeoCode',
+                ReadonlyField::create('VimeoCode', 'Vimeo Code (numeric)')
+                    ->setDescription('The numeric code extracted from your input above.')
             );
         }
+
 
         return $fields;
     }
@@ -232,6 +267,25 @@ class VimeoDataObject extends DataObject
     public function onBeforeWrite(): void
     {
         parent::onBeforeWrite();
+        if ($this->VimeoCodeOriginal && !$this->UseAdvancedOptions) {
+            $extracted = null;
+            if (preg_match('/^[0-9]+$/', $this->VimeoCodeOriginal)) {
+                $extracted = $this->VimeoCodeOriginal;
+                // do nothing
+            } else {
+                // try to extract code from URL
+                $extracted = $this->extractVimeoCode($this->VimeoCodeOriginal);
+            }
+            if ($extracted !== null) {
+                $this->VimeoCode = (int) $extracted;
+            } else {
+                $this->VimeoCode = 0;
+            }
+        }
+        if ($this->UseAdvancedOptions) {
+            $this->VimeoCode = 0;
+            $this->VimeoCodeOriginal = '';
+        }
         $this->VimeoCode = (int) $this->VimeoCode;
         $this->updateData(false);
     }
@@ -265,14 +319,23 @@ class VimeoDataObject extends DataObject
         return $this->dataAsArray;
     }
 
-    protected function updateData(bool $writeToDatabase = true): string
+    protected function updateData(?bool $writeToDatabase = true): string
     {
-        if ($this->doNotRetrieveData || !$this->VimeoCode) {
+        if ($this->doNotRetrieveData || !$this->VimeoCode || $this->UseAdvancedOptions) {
             return (string) $this->Data;
         }
 
         $url = $this->buildOembedUrl((string) $this->VimeoCode);
         $json = $this->httpGet($url);
+        if ($json === null) {
+            $this->UseAdvancedOptions = true;
+            $this->VimeoCode = 0; // avoid further attempts
+            $this->VimeoCodeOriginal = '';
+            if ($writeToDatabase && $this->isInDB()) {
+                $this->write();
+            }
+            return (string) $this->Data;
+        }
         $decoded = json_decode($json, true);
 
         if (!is_array($decoded)) {
@@ -288,7 +351,9 @@ class VimeoDataObject extends DataObject
         // Persist
         $this->dataAsArray = $result;
         $this->Data = $this->safelySerialize($this->dataAsArray);
-        $this->HTMLSnippet = (string) ($this->dataAsArray['html'] ?? '');
+        if (!$this->UseAdvancedOptions) {
+            $this->HTMLSnippet = (string) ($this->dataAsArray['html'] ?? '');
+        }
 
         if ($writeToDatabase) {
             // Avoid infinite loop if triggered in onBeforeWrite
@@ -328,11 +393,11 @@ class VimeoDataObject extends DataObject
         return $base . '?' . http_build_query($params, arg_separator: '&', encoding_type: PHP_QUERY_RFC3986);
     }
 
-    protected function httpGet(string $url): string
+    protected function httpGet(string $url): ?string
     {
         $ch = curl_init();
         if ($ch === false) {
-            throw new RuntimeException('Unable to initialise cURL.');
+            return null;
         }
 
         curl_setopt_array($ch, [
@@ -345,17 +410,17 @@ class VimeoDataObject extends DataObject
         ]);
 
         $data = curl_exec($ch);
+
         if ($data === false) {
-            $err = curl_error($ch);
             curl_close($ch);
-            throw new RuntimeException('cURL error: ' . $err);
+            return null;
         }
 
         $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
         if ($code < 200 || $code >= 300) {
-            throw new RuntimeException('HTTP error from Vimeo: ' . $code);
+            return null;
         }
 
         // Strip non-ASCII that can break unserialize in legacy storage
@@ -363,6 +428,8 @@ class VimeoDataObject extends DataObject
 
         return $data;
     }
+
+
 
     protected function getDataValue(string $key): mixed
     {
@@ -376,5 +443,14 @@ class VimeoDataObject extends DataObject
             return null;
         }
         return $v ? '1' : '0';
+    }
+
+    public function extractVimeoCode(string $url): ?string
+    {
+        $pattern = '/(?:vimeo\.com\/(?:.*\/)?|player\.vimeo\.com\/video\/)([0-9]+)/';
+        if (preg_match($pattern, $url, $matches)) {
+            return $matches[1];
+        }
+        return null;
     }
 }
