@@ -16,6 +16,10 @@ class VimeoDOD extends Extension
     private static $has_one = [
         'VimeoDataObject' => VimeoDataObject::class,
     ];
+    private static $field_labels = [
+        'VimeoDataObject' => 'Video',
+        'VimeoDataObjectID' => 'Video',
+    ];
 
     private static array $exclude_vimeo_from_page_classes = [];
 
@@ -23,19 +27,27 @@ class VimeoDOD extends Extension
 
     public function updateCMSFields(FieldList $fields)
     {
+        $linkToModelAdmin = _t('VimeoDOD.LINKTOMODELADMIN', 'To edit your videos, please go to <a href="/admin/vimeos">Vimeo Editing Page</a>.');
+        $tab = _t('VimeoDOD.TAB', 'Root.Vimeo');
         if ($this->HasVimeo()) {
             $listObject = VimeoDataObject::get();
             if ($listObject->count()) {
-                $tab = _t('VimeoDOD.TAB', 'Root.Vimeo');
                 $list = $listObject->map($index = 'ID', $titleField = 'Title')->toArray();
-                $linkToModelAdmin = _t('VimeoDOD.LINKTOMODELADMIN', 'To edit your videos, please go to <a href="/admin/vimeos">Vimeo Editing Page</a>.');
                 $fields->addFieldToTab(
                     $tab,
                     (new DropdownField('VimeoDataObjectID', _t('VimeoDOD.URLFIELD', 'Video'), $list))
                         ->setEmptyString(_t('VimeoDOD.EMPTYSTRING', '--- select vimeo video ---'))
                         ->setDescription($linkToModelAdmin)
                 );
+            } else {
+                $fields->removeByName('VimeoDataObjectID');
+                $fields->addFieldToTab(
+                    $tab,
+                    LiteralField::create('NoVimeo', 'There are no videos available for this page.' . $linkToModelAdmin)
+                );
             }
+        } else {
+            $fields->removeByName('VimeoDataObjectID');
         }
         return $fields;
     }
