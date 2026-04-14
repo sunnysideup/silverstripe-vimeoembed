@@ -8,7 +8,6 @@ use SilverStripe\Core\Extension;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\LiteralField;
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\DataList;
 
 class VimeoDOD extends Extension
@@ -16,6 +15,7 @@ class VimeoDOD extends Extension
     private static $has_one = [
         'VimeoDataObject' => VimeoDataObject::class,
     ];
+
     private static $field_labels = [
         'VimeoDataObject' => 'Video',
         'VimeoDataObjectID' => 'Video',
@@ -35,7 +35,7 @@ class VimeoDOD extends Extension
                 $list = $listObject->map($index = 'ID', $titleField = 'Title')->toArray();
                 $fields->addFieldToTab(
                     $tab,
-                    (new DropdownField('VimeoDataObjectID', _t('VimeoDOD.URLFIELD', 'Video'), $list))
+                    (DropdownField::create('VimeoDataObjectID', _t('VimeoDOD.URLFIELD', 'Video'), $list))
                         ->setEmptyString(_t('VimeoDOD.EMPTYSTRING', '--- select vimeo video ---'))
                         ->setDescription($linkToModelAdmin)
                 );
@@ -49,6 +49,7 @@ class VimeoDOD extends Extension
         } else {
             $fields->removeByName('VimeoDataObjectID');
         }
+
         return $fields;
     }
 
@@ -57,17 +58,15 @@ class VimeoDOD extends Extension
         $owner = $this->getOwner();
         $hasVimeo = true;
         $includeClasses = $owner->Config()->get('include_vimeo_in_page_classes');
-        if (count($includeClasses)) {
-            if (! in_array($owner->ClassName, Config::inst()->get(VimeoDOD::class, 'include_vimeo_in_page_classes'), true)) {
-                $hasVimeo = false;
-            }
+        if (count($includeClasses) > 0 && ! in_array($owner->ClassName, Config::inst()->get(VimeoDOD::class, 'include_vimeo_in_page_classes'), true)) {
+            $hasVimeo = false;
         }
+
         $excludeClasses = Config::inst()->get(VimeoDOD::class, 'exclude_vimeo_from_page_classes');
-        if (count($excludeClasses)) {
-            if (in_array($owner->ClassName, $excludeClasses, true)) {
-                $hasVimeo = false;
-            }
+        if (count($excludeClasses) > 0 && in_array($owner->ClassName, $excludeClasses, true)) {
+            $hasVimeo = false;
         }
+
         return $hasVimeo;
     }
 

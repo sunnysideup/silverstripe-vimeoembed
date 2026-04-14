@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sunnysideup\Vimeoembed\Cms;
 
 use SilverStripe\Admin\ModelAdmin;

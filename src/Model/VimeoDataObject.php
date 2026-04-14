@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sunnysideup\Vimeoembed\Model;
 
+use Override;
 use RuntimeException;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Convert;
@@ -116,31 +117,46 @@ class VimeoDataObject extends DataObject
     ];
 
     private static string $singular_name = 'Vimeo Video';
+
     private static string $plural_name = 'Vimeo Videos';
+
     private static string $default_sort = 'Title ASC';
 
     // ---- Configurable oEmbed options ----
     private static string $vimeo_base_url = 'https://vimeo.com/api/oembed.json';
 
     private static ?int $width = null;
+
     private static ?int $maxwidth = null;
+
     private static ?int $height = null;
+
     private static ?int $maxheight = null;
 
     private static ?bool $byline = null;
+
     private static ?bool $title = null;
+
     private static ?bool $portrait = null;
+
     private static ?string $color = null;
+
     private static ?string $callback = null;
+
     private static ?bool $autoplay = null;
+
     private static ?bool $xhtml = null;
+
     private static ?bool $api = null;
+
     private static ?string $wmode = null;
+
     private static ?bool $iframe = null;
 
     /** For internal use only: skip remote fetch */
     private bool $doNotRetrieveData = false;
 
+    #[Override]
     public function getCMSFields(): FieldList
     {
         $fields = parent::getCMSFields();
@@ -209,6 +225,7 @@ class VimeoDataObject extends DataObject
         if ($data !== [] && array_key_exists($name, $data) && $data[$name] !== null) {
             return DBVarchar::create_field('Varchar', (string) $data[$name]);
         }
+
         return null;
     }
 
@@ -219,10 +236,10 @@ class VimeoDataObject extends DataObject
         $h = (int) ($this->getDataValue('thumbnail_height') ?? 0);
 
         $html = $thumb
-            ? '<img src=\'' . Convert::raw2att((string) $thumb) . '\' ' .
-            ($w > 0 ? 'width=\'' . $w . '\' ' : '') .
-            ($h > 0 ? 'height=\'' . $h . '\' ' : '') .
-            'alt=\'' . Convert::raw2att($this->Title) . '\'>'
+            ? "<img src='" . Convert::raw2att((string) $thumb) . "' " .
+            ($w > 0 ? "width='" . $w . "' " : '') .
+            ($h > 0 ? "height='" . $h . "' " : '') .
+            "alt='" . Convert::raw2att($this->Title) . "'>"
             : '[' . Convert::raw2att($this->Title) . ']';
 
         return DBHTMLText::create_field('HTMLText', $html);
@@ -240,7 +257,7 @@ class VimeoDataObject extends DataObject
         $full = $thumb !== '' ? str_replace('_295x166', '', $thumb) : '';
 
         $html = $full !== ''
-            ? '<img src=\'' . Convert::raw2att($full) . '\' alt=\'' . Convert::raw2att($this->Title) . '\'>'
+            ? "<img src='" . Convert::raw2att($full) . "' alt='" . Convert::raw2att($this->Title) . "'>"
             : '[' . Convert::raw2att($this->Title) . ']';
 
         return DBHTMLText::create_field('HTMLText', $html);
@@ -252,6 +269,7 @@ class VimeoDataObject extends DataObject
         if ($thumb === '') {
             return null;
         }
+
         $full = str_replace('_295x166', '', $thumb);
         return DBVarchar::create_field('Varchar', $full);
     }
@@ -261,31 +279,32 @@ class VimeoDataObject extends DataObject
         if ($noCaching || strlen((string) $this->HTMLSnippet) < 17 || $this->Data === null) {
             $this->updateData(true);
         }
+
         return $this->HTMLSnippet;
     }
 
-    public function onBeforeWrite(): void
+    #[Override]
+    protected function onBeforeWrite(): void
     {
         parent::onBeforeWrite();
         if ($this->VimeoCodeOriginal && !$this->UseAdvancedOptions) {
             $extracted = null;
-            if (preg_match('/^[0-9]+$/', $this->VimeoCodeOriginal)) {
+            if (preg_match('/^\d+$/', $this->VimeoCodeOriginal)) {
                 $extracted = $this->VimeoCodeOriginal;
                 // do nothing
             } else {
                 // try to extract code from URL
                 $extracted = $this->extractVimeoCode($this->VimeoCodeOriginal);
             }
-            if ($extracted !== null) {
-                $this->VimeoCode = (int) $extracted;
-            } else {
-                $this->VimeoCode = 0;
-            }
+
+            $this->VimeoCode = $extracted !== null ? (int) $extracted : 0;
         }
+
         if ($this->UseAdvancedOptions) {
             $this->VimeoCode = 0;
             $this->VimeoCodeOriginal = '';
         }
+
         $this->VimeoCode = (int) $this->VimeoCode;
         $this->updateData(false);
     }
@@ -297,6 +316,7 @@ class VimeoDataObject extends DataObject
         if ($decoded === false) {
             return [];
         }
+
         $value = @unserialize($decoded, ['allowed_classes' => false]);
         return is_array($value) ? $value : [];
     }
@@ -312,9 +332,11 @@ class VimeoDataObject extends DataObject
         if ($this->dataAsArray !== []) {
             return $this->dataAsArray;
         }
+
         if (!$this->Data) {
             $this->updateData(true);
         }
+
         $this->dataAsArray = $this->safelyUnserialize((string) $this->Data);
         return $this->dataAsArray;
     }
@@ -334,8 +356,10 @@ class VimeoDataObject extends DataObject
             if ($writeToDatabase && $this->isInDB()) {
                 $this->write();
             }
+
             return (string) $this->Data;
         }
+
         $decoded = json_decode($json, true);
 
         if (!is_array($decoded)) {
@@ -355,11 +379,9 @@ class VimeoDataObject extends DataObject
             $this->HTMLSnippet = (string) ($this->dataAsArray['html'] ?? '');
         }
 
-        if ($writeToDatabase) {
-            // Avoid infinite loop if triggered in onBeforeWrite
-            if ($this->isInDB()) {
-                $this->write();
-            }
+        // Avoid infinite loop if triggered in onBeforeWrite
+        if ($writeToDatabase && $this->isInDB()) {
+            $this->write();
         }
 
         return (string) $this->Data;
@@ -442,15 +464,17 @@ class VimeoDataObject extends DataObject
         if ($v === null) {
             return null;
         }
+
         return $v ? '1' : '0';
     }
 
     public function extractVimeoCode(string $url): ?string
     {
-        $pattern = '/(?:vimeo\.com\/(?:.*\/)?|player\.vimeo\.com\/video\/)([0-9]+)/';
+        $pattern = '/(?:vimeo\.com\/(?:.*\/)?|player\.vimeo\.com\/video\/)(\d+)/';
         if (preg_match($pattern, $url, $matches)) {
             return $matches[1];
         }
+
         return null;
     }
 }
