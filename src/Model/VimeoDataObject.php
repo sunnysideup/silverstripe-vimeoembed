@@ -115,6 +115,11 @@ class VimeoDataObject extends DataObject
         'Title' => 'Title',
     ];
 
+    private static array $field_labels = [
+        'UseAdvancedOptions' => 'BYO Embed Code',
+        'Title' => 'Name of the video',
+    ];
+
     private static string $singular_name = 'Vimeo Video';
     private static string $plural_name = 'Vimeo Videos';
     private static string $default_sort = 'Title ASC';
@@ -152,7 +157,7 @@ class VimeoDataObject extends DataObject
         );
         if ($this->UseAdvancedOptions) {
             $fields->addFieldToTab(
-                'Root.AdvancedOptions',
+                'Root.PasteYourOwnCode',
                 TextareaField::create('HTMLSnippet', 'HTML Snippet')->setRows(4)
                     ->setDescription('
                         You can paste your own embed code here if you do not want to use the automatic retrieval from Vimeo.
@@ -160,7 +165,7 @@ class VimeoDataObject extends DataObject
                         This is usually in the format of something like this:
                             <br />
                             <br />
-                            &lt;iframe id=&quot;how-it-works-iframe&quot; width=&quot;439&quot; height=&quot;274&quot; src=&quot;https://player.vimeo.com/video/123456789?h=123&amp;amp;autoplay=1&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot; title=&quot;How It Works Video Player&quot; data-vimeo-tracked=&quot;true&quot; data-ready=&quot;true&quot;&gt;&lt;/iframe&gt;
+                            &lt;iframe width=&quot;439&quot; height=&quot;274&quot; src=&quot;https://player.vimeo.com/video/123456789?h=123&amp;amp;autoplay=1&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot; title=&quot;How It Works Video Player&quot; data-vimeo-tracked=&quot;true&quot; data-ready=&quot;true&quot;&gt;&lt;/iframe&gt;
                     ')
             );
             $fields->removeByName('VimeoCode');
@@ -328,7 +333,6 @@ class VimeoDataObject extends DataObject
         $url = $this->buildOembedUrl((string) $this->VimeoCode);
         $json = $this->httpGet($url);
         if ($json === null) {
-            $this->UseAdvancedOptions = true;
             $this->VimeoCode = 0; // avoid further attempts
             $this->VimeoCodeOriginal = '';
             if ($writeToDatabase && $this->isInDB()) {
