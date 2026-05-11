@@ -143,7 +143,9 @@ class VimeoDataObject extends DataObject
     private static ?string $wmode = null;
     private static ?bool $iframe = null;
 
-    /** For internal use only: skip remote fetch */
+    /**
+     * For internal use only: skip remote fetch
+     **/
     private bool $doNotRetrieveData = false;
 
     public function getCMSFields(): FieldList
